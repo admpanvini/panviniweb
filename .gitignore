@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+#Drive access
+tokens/*
+!.gitkeep
+
 # production
 /build
 

@@ -1,15 +1,42 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f8fd;
+  --foreground: #e8eaf3;
+  --base: #94d2bd; /* tu color principal */
+  --base: #d294b1; /* tu color principal */
+  --base: #ff982b; /* tu color principal */
+  --base: #fff34b; /* tu color principal */
+  --base: #ff4b6c; /* tu color principal */
+  --base: #24ca98; /* tu color principal */
+  --base: #446ba1; /* tu color principal */
+  --base: #9e41ef; /* Mi favorito */
+  --base: #233697; /* Mi favorito */
+  
+  --baseSuperClara: color-mix(in srgb, var(--base) 15%, rgb(255, 255, 255));
+  --baseClara: color-mix(in srgb, var(--base) 50%, white);
+  --baseMedia: color-mix(in srgb, var(--base)  100%, white);
+  --baseOscura: color-mix(in srgb, var(--base) 90%, black);
+  --colorNavbar: linear-gradient(-90deg, var( --baseOscura), var(--baseMedia));
+  --colorSidebar: linear-gradient(-120deg,var( --baseOscura), var(--baseMedia));
+  --colorTableHeader: linear-gradient(-120deg,var( --baseOscura), var(--baseMedia));
+
+  --base-admin: #279492; /* tu color principal para admin*/
+  
+  --baseSuperClara-admin: color-mix(in srgb, var(--base-admin) 15%, rgb(255, 255, 255));
+  --baseClara-admin: color-mix(in srgb, var(--base-admin) 50%, white);
+  --baseMedia-admin: color-mix(in srgb, var(--base-admin)  100%, white);
+  --baseOscura-admin: color-mix(in srgb, var(--base-admin) 90%, black);
+  --colorNavbar-admin: linear-gradient(-90deg, var( --baseOscura-admin), var(--baseMedia-admin));
+  --colorSidebar-admin: linear-gradient(-120deg,var( --baseOscura-admin), var(--baseMedia-admin));
+  --colorTableHeader-admin: linear-gradient(-120deg,var( --baseOscura-admin), var(--baseMedia-admin));
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Poppins", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,8 +46,45 @@
   }
 }
 
+
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, var(--background), var(--foreground)); /* rojo a negro */
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Roboto", sans-serif !important;
+  font-weight: 100 !important;
+}
+
+@layer utilities {
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .animate-slideIn {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+}
+
+@layer base {
+  body {
+    font-family: "Roboto", sans-serif !important;
+    font-weight: 100 !important;
+  }
 }
