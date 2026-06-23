@@ -16,12 +16,9 @@ export async function POST(req: Request) {
     propiedad_nombre,
     propiedad_direccion,
     propiedad_codigo,
-    propiedad_estado
+    propiedad_estado,
+    propiedad_datos
     } = body;
-
-    console.log("HHAYY PROPIEDAD??",id_propiedad)
-    
-    // === VALIDACIONES ===
 
     if (!propiedad_nombre || propiedad_nombre.trim() === "") {
       return NextResponse.json(
@@ -51,18 +48,26 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
+    
     const result = await save_propiedad({
       id_propiedad,
       propiedad_nombre,
       propiedad_direccion,
       propiedad_codigo,
-      propiedad_estado
+      propiedad_estado,
+      propiedad_datos
     });
-    return NextResponse.json(result ?? { ok: true });
 
+    if(result.error){ // Si hay un error generado dentro del save propiedad.
+      return NextResponse.json(
+        { error: result.error },
+        { status: 400 }
+      );
+    }
+    
+    return NextResponse.json(result ?? { ok: true });
   } catch (err) {
     console.error("❌ Error en savepropiedad:", err);
-    return NextResponse.json({ error: "Error interno" }, { status: 500 });
+    return NextResponse.json({ error: "Error interno" },{ status: 500 });
   }
 }

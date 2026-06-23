@@ -16,7 +16,7 @@ export async function get_user_notifications(id_cuenta:number) {
       LIMIT 10;
     `;
     const result = await pool.query(query, [id_cuenta]);
-    console.log('✅ Resultados:', result.rows);
+    console.log('✅ Resultados (user notifications):', result.rows);
     return result.rows;  
   } catch (err:any) {
     console.error('❌ Error en query:', err?.message || 'Unknown error');

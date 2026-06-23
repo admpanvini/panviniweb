@@ -28,15 +28,17 @@ const links_user= [
   { name: "Documentos", path: "/user/documentos", icon: Folder },
   { name: "Contacto", path: "/user/contacto", icon: Mail },
   { name: "Tu cuenta", path: "/user/cuenta", icon: User },
-  { name: "Cerrar sesión", path: "/user/cuenta", icon: CirclePower }
+  { name: "Cerrar sesión", path: "/auth/logout", icon: CirclePower }
 ];
 const links_admin= [
   { name: "Propiedades", path: "/admin/propiedades", icon: Home },
   { name: "Unidades", path: "/admin/unidades", icon: Building },
   { name: "Cuentas", path: "/admin/cuentas", icon: BookUser },
+  { name: "Administradores", path: "/admin/administradores", icon: BookUser },
+  { name: "Tu cuenta", path: "/admin/cuenta", icon: User },
   { name: "Documentos", path: "/admin/documentos", icon: FileText },
   { name: "Notificaciones", path: "/admin/notificaciones", icon: Bell },
-  { name: "Cerrar sesión", path: "/closesession", icon: CirclePower }
+  { name: "Cerrar sesión", path: "/auth/logout", icon: CirclePower }
 ];
 
 

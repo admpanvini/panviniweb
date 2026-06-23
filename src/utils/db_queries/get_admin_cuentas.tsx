@@ -47,11 +47,9 @@ export async function get_cuentas({
       WHERE ${where.join(" AND ")}
       ORDER BY c.id_cuenta DESC
     `;
-    console.log("Query--",query)
     const result = await pool.query(query, params);
     console.log("Responses: ",result.rows.length)
     return result.rows;
-
   } catch (err: any) {
     console.error("❌ Error en get_cuentas:", err.message);
     return null;

@@ -37,7 +37,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Estado inválido" }, { status: 400 });
     }
 
-    if (!cuenta_unidad_codigo || cuenta_unidad_codigo.length < 6) {
+    if (!cuenta_unidad_codigo) {
+      return NextResponse.json({ error: "Debe existir un código de unidad" }, { status: 400 });
+    }
+    if (cuenta_unidad_codigo!="admin" && cuenta_unidad_codigo.length < 6) {
       return NextResponse.json({ error: "Código de unidad debe tener al menos 6 caracteres" }, { status: 400 });
     }
 

@@ -9,10 +9,10 @@
   --base: #ff982b; /* tu color principal */
   --base: #fff34b; /* tu color principal */
   --base: #ff4b6c; /* tu color principal */
-  --base: #24ca98; /* tu color principal */
   --base: #446ba1; /* tu color principal */
   --base: #9e41ef; /* Mi favorito */
-  --base: #233697; /* Mi favorito */
+  --base: #1a9670; /* tu color principal */
+  --base: #39478b; /* Mi favorito */
   
   --baseSuperClara: color-mix(in srgb, var(--base) 15%, rgb(255, 255, 255));
   --baseClara: color-mix(in srgb, var(--base) 50%, white);
@@ -22,7 +22,7 @@
   --colorSidebar: linear-gradient(-120deg,var( --baseOscura), var(--baseMedia));
   --colorTableHeader: linear-gradient(-120deg,var( --baseOscura), var(--baseMedia));
 
-  --base-admin: #279492; /* tu color principal para admin*/
+  --base-admin: #ff4b6c; /* tu color principal para admin*/
   
   --baseSuperClara-admin: color-mix(in srgb, var(--base-admin) 15%, rgb(255, 255, 255));
   --baseClara-admin: color-mix(in srgb, var(--base-admin) 50%, white);
@@ -41,7 +41,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #e4e4e4;
     --foreground: #ededed;
   }
 }

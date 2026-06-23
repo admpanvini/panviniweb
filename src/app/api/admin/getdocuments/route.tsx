@@ -13,9 +13,10 @@ export async function POST(req: Request) {
     }
     const files=await listFiles()
     return NextResponse.json(files || {});
-  } catch (err) {
-    console.error("Error interno:", err);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    } catch (err) {
+      let message = "Error desconocido";
+      err instanceof Error? message = err.message:message = String(err);
+      return NextResponse.json({error: "Error interno del servidor",error_type: 'google',details: message},{ status: 500 });
   }
 }
 

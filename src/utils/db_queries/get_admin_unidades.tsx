@@ -25,7 +25,7 @@ export async function get_admin_unidades(activos:boolean=true,propiedad_codigo?:
     `;
     console.log(query)
     const result = await pool.query(query, []);
-    console.log('✅ Resultados:', result.rows.length);
+    console.log('✅ Resultados (admin unidades):', result.rows.length);
     return result.rows;  
   } catch (err:any) {
     console.error('❌ Error en query:', err?.message || 'Unknown error');

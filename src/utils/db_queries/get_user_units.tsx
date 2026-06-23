@@ -7,6 +7,8 @@ export async function get_user_units(id_cuenta:number) {
         c.id_cuenta,
         c.cuenta_titular,
         c.cuenta_tipo,
+        c.cuenta_email,
+        c.cuenta_telefono,
         c.cuenta_unidad_codigo,
         u.id_unidad,
         u.unidad_nombre,
@@ -31,7 +33,7 @@ export async function get_user_units(id_cuenta:number) {
       WHERE c.id_cuenta = $1
     `;
     const result = await pool.query(query, [id_cuenta]);
-    console.log('✅ Resultados:', result.rows);
+    console.log('✅ Resultados (user units):', result.rows);
     return result.rows[0];  
   } catch (err:any) {
     console.error('❌ Error en query:', err?.message || 'Unknown error');

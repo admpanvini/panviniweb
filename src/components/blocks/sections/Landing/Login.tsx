@@ -1,6 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Loading } from "../../template/Loading";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ export default function LoginForm() {
         setError(undefined)
         setLoading(true);
         try {
-            const res = await fetch("api/login", {
+            const res = await fetch("api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ unidad_codigo, email, clave }),
@@ -35,40 +36,40 @@ export default function LoginForm() {
     };
     return(
         <div>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3 text-[var(--baseSuperClara)] border-[var(--baseClara)]  focus:ring-[var(--baseClara)] ">
                 <input
                     type="text"
                     placeholder="Usuario"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg border border-[#6e718a]  focus:ring-2 focus:ring-[#9099f5] outline-none text-[#000]"
+                    className="w-full px-4 py-2 rounded-lg border focus:ring-2  outline-none placeholder:text-[var(--baseClara)]"
                 />
                 <input
                     type="text"
                     placeholder="Unidad"
                     value={unidad_codigo}
                     onChange={(e) => setUnidad_codigo(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg border border-[#6e718a]  focus:ring-2 focus:ring-[#9099f5] outline-none text-[#000]"
+                    className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
                 />
                 <input
                     type="password"
                     placeholder="Contraseña"
                     value={clave}
                     onChange={(e) => setClave(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg border border-[#6e718a] focus:ring-2 focus:ring-[#9099f5] outline-none text-[#000]"
+                    className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
                 />
 
                 <button
                     type="submit"
-                    className="w-full bg-[#9099f5] text-white py-2 rounded-lg font-semibold hover:bg-[#1c2370] transition"
+                    className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition"
                 >
-                {loading ? "Cargando..." : "Acceder"}
+                {loading ? <Loading type="inline" text="Iniciando sesión..." color="#f8fffc"/> : "Iniciar Sesión"}
                 </button>
             </form>
-            <div className="mt-4 text-center text-sm text-gray-600">
+            <div className="mt-4 text-center text-sm text-gray-100">
                 <div>
                     {error?.map((e, i) => (
-                    <p key={i} className="text-[#c21515]">{e}</p>
+                    <p key={i} className="text-[#e86b6b]">{e}</p>
                     ))}
                     {
                         error?<br/>:''
@@ -76,13 +77,13 @@ export default function LoginForm() {
                 </div>
             <p>
                 ¿No tenés cuenta?{" "}
-                <a href="/auth/signup" className="text-[#9099f5] hover:underline">
+                <a href="/auth/signup" className="text-[var(--baseClara)] hover:underline">
                 Registrate
                 </a>
                 
             </p>
             <p>
-                <a href="/auth/recover" className="text-[#9099f5] hover:underline">
+                <a href="/auth/recover" className="text-[var(--baseClara)] hover:underline">
                 ¿Olvidaste tu clave?
                 </a>
             </p>

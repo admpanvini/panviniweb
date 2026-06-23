@@ -105,6 +105,17 @@ export async function POST(req: Request) {
 
   } catch (err: any) {
     console.error("⛔ Error subiendo archivo:", err?.message || err);
+    if (err?.message?.includes("invalid_grant")) {
+      const oauth2 = getOAuthClient()
+      const url = oauth2.generateAuthUrl({
+        access_type: "offline",
+        prompt: "consent",
+        scope: ["https://www.googleapis.com/auth/drive"]
+      })
+      console.log("⚠️ Google Drive authorization expired")
+      console.log("Authorize again here:")
+      console.log(url)
+    }
     return NextResponse.json(
       { error: err?.message || "Error interno" },
       { status: 500 }

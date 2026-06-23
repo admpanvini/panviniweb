@@ -3,15 +3,22 @@ import { NextResponse } from "next/server";
 import { listFiles } from "@/utils/drive_access/drive_acces";
 
 export async function POST(req: Request) {
-    const datos_cuenta=await getDataFromCookiesToken()
-    if(!datos_cuenta){
-        return NextResponse.json({error:"Debe iniciar sesión para poder consultar la información de la cuenta."}, { status: 400 })
+    try {
+        const datos_cuenta=await getDataFromCookiesToken()
+        if(!datos_cuenta){
+            return NextResponse.json({error:"Debe iniciar sesión para poder consultar la información de la cuenta."}, { status: 400 })
+        }
+        const body = await req.json()
+        const { propiedad_codigo } = body
+        console.log("Buscando files para el codigo de la propiedad",propiedad_codigo)
+        const files=await listFiles(propiedad_codigo || '');
+        // Devolver los datos del usuario + token
+        if(!files){
+            return NextResponse.json({error:"Error en conexión con base de datos. El usuario no puede ser encontrado"}, { status: 400 })
+        }
+        return NextResponse.json(files|| [])
+    } catch (error) {
+        return NextResponse.json({error:"Error en la conexión con google drive", "details": error}, { status: 400 })
     }
-    const {id_cuenta}=datos_cuenta
-    const files=await listFiles('01');
-    // Devolver los datos del usuario + token
-    if(!files){
-        return NextResponse.json({error:"Error en conexión con base de datos. El usuario no puede ser encontrado"}, { status: 400 })
-    }
-    return NextResponse.json(files|| [])
+
 }

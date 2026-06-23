@@ -7,53 +7,74 @@ const tokens = loadTokens();
 const oauth2 = getOAuthClient();
 oauth2.setCredentials(tokens);
 const drive = google.drive({ version: "v3", auth: oauth2 });
+console.log(drive)
 
 export async function listFiles(folder?: string) {
 
   // 1) Obtener todas las carpetas del Drive
   // a) Busco la carpeta web
-  const webSearch = await drive.files.list({
-      q: "name='web' and mimeType = 'application/vnd.google-apps.folder' and trashed = false",
-      fields: "files(id, name)"
+  try{
+    const webSearch = await drive.files.list({
+        q: "name='web' and mimeType = 'application/vnd.google-apps.folder' and trashed = false",
+        fields: "files(id, name)"
+      });
+      
+    console.log("Buscando la carpeta web--->",webSearch.data.files)
+    const webId = webSearch.data.files?.[0]?.id;
+
+    if (!webId) {
+        throw new Error("No existe la carpeta web dentro de drive — no se puede crear archivo");
+    }
+
+    // b) Buscar SOLO carpeta 'XX' dentro de web
+    const allFoldersRes = await drive.files.list({
+      q: `'${webId}' in parents 
+          and mimeType='application/vnd.google-apps.folder' 
+          and trashed=false`,
+      fields: "files(id,name)"
     });
-    
-  console.log("Buscando la carpeta web--->",webSearch.data.files)
-  const webId = webSearch.data.files?.[0]?.id;
 
-  if (!webId) {
-      throw new Error("No existe la carpeta web dentro de drive — no se puede crear archivo");
-  }
+    const allFolders = allFoldersRes.data.files || [];
 
-  // b) Buscar SOLO carpeta 'XX' dentro de web
-  const allFoldersRes = await drive.files.list({
-    q: `'${webId}' in parents 
-        and mimeType='application/vnd.google-apps.folder' 
-        and trashed=false`,
-    fields: "files(id,name)"
-  });
+    // 👉 Si se especifica una carpeta
+    if (folder) {
+      const found = allFolders.find((f) => f.name === folder);
+      if (!found) return [];
+      if (!found?.id) return [];
+      let files = await getFilesFromFolder(found.id);
+      files = files.map(x => ({ ...x, folder }))
+      return files;
+    }
 
-  const allFolders = allFoldersRes.data.files || [];
+    // 👉 Si NO se especifica carpeta: recorrer todas
+    let allFiles: any[] = [];
+    for (const f of allFolders) {
+      if (!f.id) continue;
+      let files = await getFilesFromFolder(f.id);
+      files = files.map(x => ({ ...x, folder: f.name }))
+      allFiles.push(...files);
+    }
 
-  // 👉 Si se especifica una carpeta
-  if (folder) {
-    const found = allFolders.find((f) => f.name === folder);
-    if (!found) return [];
-    if (!found?.id) return [];
-    let files = await getFilesFromFolder(found.id);
-    files = files.map(x => ({ ...x, folder }))
-    return files;
-  }
+    return allFiles.filter( a => a.folder!= "web");
+  }catch(err:any){
+    if (err?.message?.includes("invalid_grant")) {
+      const oauth2 = getOAuthClient();
 
-  // 👉 Si NO se especifica carpeta: recorrer todas
-  let allFiles: any[] = [];
-  for (const f of allFolders) {
-    if (!f.id) continue;
-    let files = await getFilesFromFolder(f.id);
-    files = files.map(x => ({ ...x, folder: f.name }))
-    allFiles.push(...files);
-  }
+      const url = oauth2.generateAuthUrl({
+        access_type: "offline",
+        prompt: "consent",
+        scope: ["https://www.googleapis.com/auth/drive"]
+      });
 
-  return allFiles.filter( a => a.folder!= "web");
+      console.log("⚠️ Google Drive authorization expired");
+      console.log("Authorize again hereAAAAAA:");
+      console.log(url);
+
+      throw new Error(`${url}`);
+    }
+
+    throw err;
+  }  
 }
 
 

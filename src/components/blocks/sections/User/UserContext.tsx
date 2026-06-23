@@ -14,6 +14,9 @@ type UserData = {
   propiedad_direccion?:string;
   propiedad_datos?:string;
   cuenta_titular?:string;
+  cuenta_tipo?:string;
+  cuenta_email?:string;
+  cuenta_telefono?:string;
 };
 
 const UserContext = createContext<{
@@ -45,7 +48,10 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           propiedad_nombre: data.propiedad_nombre,
           propiedad_datos: data.propiedad_datos,
           propiedad_direccion: data.propiedad_direccion,
-          cuenta_titular: data.cuenta_titular
+          cuenta_titular: data.cuenta_titular,
+          cuenta_tipo: data.cuenta_tipo,
+          cuenta_email: data.cuenta_email,
+          cuenta_telefono: data.cuenta_telefono
         });
       } catch (error) {
         console.error("Error fetching user data", error);

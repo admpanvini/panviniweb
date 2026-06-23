@@ -6,16 +6,16 @@ export default function Landing_login({ children }: { children: React.ReactNode 
   const goTo = (section:"login" | "signin" | "recover")=>{ setView(section)}
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{ backgroundImage: "url('https://mediaim.expedia.com/destination/1/34edd77bd8d23ed8a598873c1093be18.jpg')" }}>
+      style={{ backgroundImage: "url('/images/loginwall.png')" }}>
       
       {/* Overlay con gradiente */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#9099f5]/80 to-[#8c00ff]/80"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#000]/80 to-[#333]/80"></div>
       
       {/* Card de login */}
-      <div className="relative z-10 w-full max-w-md bg-white/70 rounded-2xl shadow-xl p-8">
+      <div className="relative z-10 w-full max-w-md bg-[#000]/70 rounded-2xl shadow-xl p-8">
         {/* Logo */}
         <center className="mb-5">
-        <img src="/logo.png" alt="logo" className="w-23 h-10" style={{filter:'invert(1)'}} />
+        <img src="/logo.png" alt="logo" className="w-23 h-10"/>
         </center>
         {children}
       </div>

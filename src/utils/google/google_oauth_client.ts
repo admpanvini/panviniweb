@@ -8,9 +8,19 @@ export function getOAuthClient() {
   const clientId = process.env.GOOGLE_CLIENT_ID!;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET!;
   const redirectUri = process.env.GOOGLE_REDIRECT_URI!;
-  console.log(clientId, clientSecret, redirectUri)
-  return new google.auth.OAuth2(clientId, clientSecret, redirectUri);
+  const oauth2 = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
+      oauth2.on("tokens", (tokens) => {
+      if (tokens.refresh_token) {
+        saveTokens(tokens)
+      }
+      if (tokens.access_token) {
+        const current = loadTokens()
+        saveTokens({ ...current, ...tokens })
+      }
+    })
+    return oauth2
 }
+
 
 export function loadTokens() {
   try {

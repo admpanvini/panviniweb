@@ -11,8 +11,6 @@ export async function POST(req: Request) {
     }
     const {id_cuenta}=datos_cuenta
     const data=await get_user_notifications(id_cuenta) 
-    const files=await listFiles('01');
-    console.log("FILESS",files)
     // Devolver los datos del usuario + token
     if(!data){
         return NextResponse.json({error:"Error en conexión con base de datos. El usuario no puede ser encontrado"}, { status: 400 })
