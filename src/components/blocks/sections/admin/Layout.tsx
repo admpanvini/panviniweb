@@ -30,7 +30,7 @@ function LayoutBase({ children }: { children: React.ReactNode }) {
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <Sidebar className="w-64 h-full" />
+          <Sidebar className="w-64 h-full" onNavigate={() => setSidebarOpen(false)} />
         </div>
 
         {/* Main */}

@@ -14,24 +14,33 @@ export default function LoginForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         
         e.preventDefault();
+        let loginOk = false;
         setError(undefined)
         setLoading(true);
         try {
-            const res = await fetch("api/auth/login", {
+            const res = await fetch("/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ unidad_codigo, email, clave }),
             });
             const data = await res.json();
             if(!res.ok){
-                setError([data.error]) //Si hay error lo mustra
+                setError([data.error || "No se pudo iniciar sesiÃ³n"]) //Si hay error lo mustra
             }else{
-                data.cuenta_tipo=='admin'? router.push("/admin"): router.push("/user") //Sino redirige a user | admin
+                loginOk = true;
+                if (data.cuenta_tipo == 'admin') {
+                    router.push("/admin")
+                } else {
+                    router.push("/user")
+                }
             }
         } catch (err) {
             console.error("Fallo login:", err);
+            setError(["Error de conexiÃ³n"])
         } finally {
-            setLoading(false);
+            if (!loginOk) {
+                setLoading(false);
+            }
         }
     };
     return(
@@ -61,7 +70,8 @@ export default function LoginForm() {
 
                 <button
                     type="submit"
-                    className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition"
+                    disabled={loading}
+                    className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition disabled:opacity-80"
                 >
                 {loading ? <Loading type="inline" text="Iniciando sesión..." color="#f8fffc"/> : "Iniciar Sesión"}
                 </button>

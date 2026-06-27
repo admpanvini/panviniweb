@@ -25,6 +25,32 @@ export default function AvisosPageDiv() {
   const userCtx = useUser();
   const userData = userCtx?.userData;
 
+  function getAvisoLink(seccion:string) {
+    switch (String(seccion)) {
+      case "3":
+        return "/user/documentos";
+      case "4":
+        return "/user/telefonos";
+      case "5":
+        return "/user";
+      default:
+        return "/user/avisos";
+    }
+  }
+
+  function getAvisoTexto(seccion:string) {
+    switch (String(seccion)) {
+      case "3":
+        return "Ir a documentos";
+      case "4":
+        return "Ir a lista de contactos útiles";
+      case "5":
+        return "Ir a expensas y vencimientos";
+      default:
+        return "";
+    }
+  }
+
   useEffect(() => {
     async function getUserData() {
       try {
@@ -41,6 +67,7 @@ export default function AvisosPageDiv() {
         setLoading(false)
       } catch (error) {
         console.error("Error fetching user data", error);
+        setLoading(false)
       }
     }
     getUserData();
@@ -79,10 +106,12 @@ export default function AvisosPageDiv() {
           >
             <Title>{n.notificacion_titulo}</Title>
             <Text className="text-[.8em]">{n.notificacion}</Text>
-            <Link href="/user/documentos">
+            <Link href={getAvisoLink(n.notificacion_seccion)}>
                   <button
                     className={`px-3 mt-[10px] py-1 text-sm bg-[var(--baseOscura)] text-white rounded cursor-pointer ${n.notificacion_seccion=="0" ? "hidden":""}`}
                   >
+                    {getAvisoTexto(n.notificacion_seccion)}
+                    <span className="hidden">
                     {
                       (() => {
                         switch (n.notificacion_seccion) {
@@ -97,6 +126,7 @@ export default function AvisosPageDiv() {
                         }
                       })()
                     }
+                    </span>
                   </button>
               </Link>
           </Card>

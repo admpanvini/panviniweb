@@ -32,6 +32,13 @@ export async function POST(req: Request) {
       )
     }
 
+    if (data.cuenta_estado !== "activo") {
+      return NextResponse.json(
+        { error: 'La cuenta todavía no está habilitada por la administración.' },
+        { status: 400 }
+      )
+    }
+
     // Comparar la clave ingresada con la almacenada en la DB (hash)
     const checkPassword: Boolean = await checkPasswords(clave, data.cuenta_clave)
     if (!checkPassword) {

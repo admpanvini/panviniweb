@@ -13,17 +13,18 @@ export function Loading({
   appType?:("user"|"admin");
   color?:string
 }) {
-    if(!color){
-        appType == "admin" ? color=`var(--baseOscura-admin)` : color=`var(--baseOscura)`;
-    }
+    const loadingColor = color || (appType == "admin" ? "var(--baseOscura-admin)" : "var(--baseOscura)");
     // FULL SCREEN overlay
     if (type === "full") {
     return (
-        <div className={`fixed inset-0 z-50 bg-[${color}]/30 backdrop-blur-sm flex items-center justify-center`}>
+        <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm flex items-center justify-center">
         <div className="px-4 py-2">
             <div className="flex flex-col items-center gap-2">
-            <div className={`w-8 h-8 border-4 border-[${color}] border-t-transparent rounded-full animate-spin`} />
-            <span className={`text-[${color}]`}>{text}</span>
+            <div
+              className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin"
+              style={{ borderColor: loadingColor, borderTopColor: "transparent" }}
+            />
+            <span style={{ color: loadingColor }}>{text}</span>
             </div>
         </div>
         </div>
@@ -38,8 +39,11 @@ export function Loading({
         style={{ height,fontSize }}
         >
         <div className="flex flex-col items-center gap-2">
-            <div className={`w-8 h-8 border-4 border-[${color}] border-t-transparent rounded-full animate-spin`}/>
-            <span className={`text-[${color}]`}>{text}</span>
+            <div
+              className="w-8 h-8 border-4 border-t-transparent rounded-full animate-spin"
+              style={{ borderColor: loadingColor, borderTopColor: "transparent" }}
+            />
+            <span style={{ color: loadingColor }}>{text}</span>
         </div>
         </div>
     );
@@ -48,10 +52,15 @@ export function Loading({
     // INLINE → small loader que NO rompe layout
     if (type === "inline") {
         return (
-            <span className={`flex justify-center items-center gap-2 text-sm opacity-90 text-[${color}]`}>
-                <span className={`w-4 h-4 border-2 border-[${color}] border-t-transparent rounded-full animate-spin`}></span>
+            <span className="flex justify-center items-center gap-2 text-sm opacity-90" style={{ color: loadingColor }}>
+                <span
+                  className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin"
+                  style={{ borderColor: loadingColor, borderTopColor: "transparent" }}
+                ></span>
                 {text} 
             </span>
         );
     }
+
+    return null;
 }

@@ -106,6 +106,16 @@ export async function POST(req: Request) {
   } catch (err: any) {
     console.error("⛔ Error subiendo archivo:", err?.message || err);
     if (err?.message?.includes("invalid_grant")) {
+      return NextResponse.json(
+        {
+          error: "La conexion con Google Drive caduco",
+          error_type: "google",
+          reconnect_url: "/api/admin/google"
+        },
+        { status: 500 }
+      );
+    }
+    if (err?.message?.includes("invalid_grant")) {
       const oauth2 = getOAuthClient()
       const url = oauth2.generateAuthUrl({
         access_type: "offline",

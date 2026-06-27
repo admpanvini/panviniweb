@@ -11,7 +11,7 @@ export async function create_user({
   unidad: string;
   email: string;
   password: string;
-  cuenta_tipo: 'inquilino' | 'propietario' | 'inmobiliaria' | 'admin';
+  cuenta_tipo: 'inquilino' | 'propietario' | 'inmobiliaria';
 }) {
   try {
     const query = `

@@ -34,7 +34,7 @@ export default function EditarUnidades() {
         body: JSON.stringify({id_unidad:id}),
     });
     const data = await res.json();
-    if(data.lenght==0){return}
+    if(data.length==0){return}
     const p=data[0]
     console.log(p)
     setForm({

@@ -16,7 +16,12 @@ export async function POST(req: Request) {
     } catch (err) {
       let message = "Error desconocido";
       err instanceof Error? message = err.message:message = String(err);
-      return NextResponse.json({error: "Error interno del servidor",error_type: 'google',details: message},{ status: 500 });
+    return NextResponse.json({
+      error: "Error interno del servidor",
+      error_type: 'google',
+      details: message,
+      reconnect_url: "/api/admin/google"
+    },{ status: 500 });
   }
 }
 

@@ -202,6 +202,7 @@ export default function CuentaAdmin() {
             className="w-full border rounded px-3 py-3 bg-[var(--baseSuperClara)]"
           >
             <option value="">Tipo de cuenta</option>
+            <option value="admin">Admin</option>
             <option value="inquilino">Inquilino</option>
             <option value="inmobiliaria">Inmobiliaria</option>
             <option value="propietario">Propietario</option>

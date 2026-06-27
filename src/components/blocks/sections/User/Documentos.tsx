@@ -20,6 +20,7 @@ export default function DocumentosPageDiv() {
   const [avisos, setAvisos] = useState<File[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Cargando datos..");
+  const [errorText, setErrorText] = useState("");
   //Modal variables
   const [open, setOpen] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -38,11 +39,20 @@ export default function DocumentosPageDiv() {
         })
 
         const data = await res.json()
+        if (!res.ok) {
+          setErrorText(data?.error || "No se pudieron cargar los documentos.");
+          setAvisos([])
+          setLoading(false)
+          return;
+        }
+        setErrorText("")
         setAvisos(data || [])
         setLoading(false)
 
       } catch (error) {
         console.error("Error fetching files", error)
+        setErrorText("No se pudieron cargar los documentos.");
+        setLoading(false)
       }
     }
 
@@ -71,7 +81,12 @@ export default function DocumentosPageDiv() {
       </h2>
 
       <PdfModal url={pdfUrl} open={open} onClose={() => setOpen(false)} appType="user"/>  
-      {avisos.length === 0 ? (
+      {errorText ? (
+        <Card className="text-[var(--baseOscura)]">
+          <Title>Documentos no disponibles</Title>
+          <Text>{errorText}</Text>
+        </Card>
+      ) : avisos.length === 0 ? (
         <Card className="text-[var(--baseOscura)]">
           <Title>No se han encontrado documentos para tu propiedad</Title>
         </Card>

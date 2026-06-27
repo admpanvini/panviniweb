@@ -31,6 +31,7 @@ export function loadTokens() {
 }
 
 export function saveTokens(tokens: any) {
+  fs.mkdirSync(path.dirname(TOKEN_PATH), { recursive: true });
   fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens, null, 2));
 }
 

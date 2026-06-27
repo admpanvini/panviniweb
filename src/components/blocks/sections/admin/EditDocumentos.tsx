@@ -12,6 +12,9 @@ export default function EditarDocumento() {
   const [titulo, setTitulo] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [reconnectUrl, setReconnectUrl] = useState("/api/admin/google");
+  const [showReconnect, setShowReconnect] = useState(false);
 
   // 1) TRAER PROPIEDADES
   useEffect(() => {
@@ -31,9 +34,11 @@ export default function EditarDocumento() {
   // 2) ENVIAR FORMULARIO
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setErrorMsg("");
+    setShowReconnect(false);
 
     if (!propiedadCodigo || !file || !titulo) {
-      alert("Complete todos los campos.");
+      setErrorMsg("Complete todos los campos.");
       return;
     }
 
@@ -50,9 +55,14 @@ export default function EditarDocumento() {
     });
 
     setLoading(false);
+    const data = await res.json();
 
     if (!res.ok) {
-      alert("Error al subir archivo");
+      if (data?.error_type === "google") {
+        setReconnectUrl(data.reconnect_url || "/api/admin/google");
+        setShowReconnect(true);
+      }
+      setErrorMsg(data?.error || "Error al subir archivo");
       return;
     }
 
@@ -109,6 +119,21 @@ export default function EditarDocumento() {
         >
           {loading ? "Subiendo..." : "Guardar documento"}
         </Button>
+
+        {errorMsg && (
+          <div className="text-[#a62942] text-sm italic mt-2 px-3 py-2 rounded">
+            Atención: {errorMsg}
+            {showReconnect && (
+              <Button
+                type="button"
+                className="ml-2 rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2 cursor-pointer"
+                onClick={() => { window.location.href = reconnectUrl; }}
+              >
+                Reestablecer conexión
+              </Button>
+            )}
+          </div>
+        )}
       </form>
     </Card>
   );

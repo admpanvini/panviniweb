@@ -29,6 +29,7 @@ export default function Cuenta() {
   const [submitPasswordText,setPasswordUserText]= useState('')
   const userCtx = useUser();
   const userData = userCtx?.userData;
+  const setUserData = userCtx?.setUserData;
   const [dataForm, setDataForm] = useState({
     nombre: userData?.cuenta_titular || '',
     telefono: userData?.cuenta_telefono || '',
@@ -84,6 +85,11 @@ export default function Cuenta() {
       setSubmitUserText('Sus datos se han guardado correctamente.')
       setTimeout(function(){setSubmitUserText('')},4000)
       const data = await res.json();
+      setUserData?.((prev) => prev ? ({
+        ...prev,
+        cuenta_titular: data.cuenta_titular,
+        cuenta_telefono: data.cuenta_telefono
+      }) : prev);
       console.log(data);
     } catch (e) {
       console.error(e);
@@ -108,6 +114,11 @@ export default function Cuenta() {
       setPasswordUserText('Sus password se ha guardado correctamente.')
       setTimeout(function(){setPasswordUserText('')},4000)
       const data = await res.json();
+      setDataFormClave({
+        clave_actual: "",
+        clave_nueva_1: "",
+        clave_nueva_2: ""
+      });
       console.log(data);
     } catch (e) {
       console.error(e);

@@ -11,11 +11,12 @@ import {
 } from "@tremor/react";
 
 import { useAdmin } from "./AdminContext";
-import { Edit, User2Icon } from "lucide-react";
+import { CircleCheck, Edit, Trash, User2Icon } from "lucide-react";
 import { useEffect, useState, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import formatFechaArgentina from "@/components/helpers/dataFormat";
 import { Loading } from "../../template/Loading";
+import ConfirmModal from "../../template/ModalNotificacion";
 
 export default function Administradores() {
   const router = useRouter();
@@ -34,26 +35,62 @@ export default function Administradores() {
 
   const [loading, setLoading] = useState(true);
   const [loadingText, setLoadingText] = useState("Cargando datos..");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [modal, setModal] = useState<{ open: boolean; row: any | null; estado: string }>({
+    open: false,
+    row: null,
+    estado: ""
+  });
 
   // ------------------------------------------------------------
   // 1) Traer TODAS las cuentas una vez
   // ------------------------------------------------------------
+  async function getCuentas() {
+    setLoading(true)
+    setLoadingText("Buscando cuentas..")
+    const res = await fetch("/api/admin/getadmins", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}), // TRAE TODO
+    });
+    setLoading(false)
+    const data = await res.json();
+    console.log(data)
+    setDataTable(data);
+  }
+
   useEffect(() => {
-    async function getCuentas() {
-      setLoading(true)
-      setLoadingText("Buscando cuentas..")
-      const res = await fetch("/api/admin/getadmins", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}), // TRAE TODO
-      });
-      setLoading(false)
-      const data = await res.json();
-      console.log(data)
-      setDataTable(data);
-    }
     getCuentas();
   }, []);
+
+  async function handleConfirmEstado() {
+    if (!modal.row) return;
+    setErrorMsg("");
+    setLoading(true)
+    setLoadingText("Guardando estado del administrador..")
+    const row = modal.row;
+    const res = await fetch("/api/admin/savecuenta", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id_cuenta: row.id_cuenta,
+        cuenta_titular: row.cuenta_titular,
+        cuenta_email: row.cuenta_email,
+        cuenta_estado: modal.estado,
+        cuenta_unidad_codigo: "admin",
+        propiedad_codigo: "ad",
+        cuenta_tipo: "admin"
+      }),
+    });
+    const data = await res.json();
+    setModal({ open: false, row: null, estado: "" });
+    if (!res.ok) {
+      setErrorMsg(data.error || "Error al guardar el estado");
+      setLoading(false)
+      return;
+    }
+    await getCuentas();
+  }
 
   // Reset de límite cuando cambian filtros
   useEffect(() => {
@@ -118,10 +155,21 @@ export default function Administradores() {
               onChange={(e) => setFilter(e.target.value)}
               className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2 w-full max-w-[250px] mx-2"
             />
+            <Button
+              className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 float-right cursor-pointer"
+              onClick={() => router.push("/admin/administradores/editar")}
+            >
+              Nuevo administrador
+            </Button>
           </div>
 
           {/* Tabla */}
           Total cuentas : { dataTable.filter((r:any) => r.cuenta_estado === "pendiente" || r.cuenta_estado === "activo").length } - Pendientes: { dataTable.filter((r:any) => r.cuenta_estado === "pendiente").length } - Activas: { dataTable.filter((r:any) => r.cuenta_estado === "activo").length } 
+          {errorMsg && (
+            <div className="text-[#a62942] text-sm italic my-2 px-3 py-2 rounded">
+              Atención: {errorMsg}
+            </div>
+          )}
           <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia-admin)]">
             <TableHead 
               className="text-white"
@@ -154,6 +202,24 @@ export default function Administradores() {
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
+                      {row.cuenta_estado !== "activo" && (
+                        <Button
+                          title="Activar"
+                          className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                          onClick={() => setModal({ open: true, row, estado: "activo" })}
+                        >
+                          <CircleCheck className="w-4 h-4" />
+                        </Button>
+                      )}
+                      {row.cuenta_estado !== "eliminado" && (
+                        <Button
+                          title="Dar de baja"
+                          className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                          onClick={() => setModal({ open: true, row, estado: "eliminado" })}
+                        >
+                          <Trash className="w-4 h-4" />
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))
@@ -178,6 +244,12 @@ export default function Administradores() {
               </Button>
             </div>
           )}
+          <ConfirmModal
+            open={modal.open}
+            text={`¿Seguro que querés cambiar el estado de este administrador a ${modal.estado}?`}
+            onCancel={() => setModal({ open: false, row: null, estado: "" })}
+            onConfirm={handleConfirmEstado}
+          />
       </div>
     )}
     </div>

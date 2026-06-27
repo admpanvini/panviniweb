@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import { Loading } from "../../template/Loading";
 
 export default function SignUpForm() {
@@ -16,7 +17,7 @@ export default function SignUpForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -24,12 +25,15 @@ export default function SignUpForm() {
 
   const validate = () => {
     if (!form.name) return "El nombre es obligatorio";
+    if (!form.cuenta_tipo) return "El tipo de cuenta es obligatorio";
+    if (!form.unidad) return "La unidad es obligatoria";
     if (!form.email.includes("@")) return "Email inválido";
+    if (form.password.length < 6) return "La clave debe tener al menos 6 caracteres";
     if (form.password !== form.repeat) return "Las claves no coinciden";
     return "";
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
@@ -54,7 +58,7 @@ export default function SignUpForm() {
       }
 
       setSuccess(true);
-    } catch (e) {
+    } catch {
       setError("Error de conexión");
       setLoading(false);
     }
@@ -63,7 +67,7 @@ export default function SignUpForm() {
   if (success) {
     return (
       <div className="text-center text-white space-y-4">
-        <p>Se ha enviado un email para verificar tu cuenta</p>
+        <p>Tu cuenta fue creada y quedo pendiente de aprobacion.</p>
         <a
           href="/auth"
           className="inline-block bg-[#9099f5] px-4 py-2 rounded-lg"
@@ -86,13 +90,13 @@ export default function SignUpForm() {
         <select
           name="cuenta_tipo"
           onChange={handleChange}
-          className={`w-full px-4 py-2 rounded-lg border border-[#FFF] focus:ring-2 outline-none text-[${form.cuenta_tipo == '' ? 'var(--baseClara)' : '#FFF'}] `}
+          className="w-full px-4 py-2 rounded-lg border border-[#FFF] focus:ring-2 outline-none"
+          style={{ color: form.cuenta_tipo == "" ? "var(--baseClara)" : "#FFF" }}
         >
           <option value="" className={`text-[var(--baseOscura)]`}>Elegir tipo de cuenta</option>
           <option value="inquilino" className={`text-[var(--baseOscura)]`}>Inquilino</option>
           <option value="propietario" className={`text-[var(--baseOscura)]`}>Propietario</option>
           <option value="inmobiliaria" className={`text-[var(--baseOscura)]`}>Inmobiliaria</option>
-          <option value="admin" className={`text-[var(--baseOscura)]`}>Admin</option>
         </select>
 
         <input
@@ -129,7 +133,7 @@ export default function SignUpForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition"
+          className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition disabled:opacity-80"
         >
           { loading ? <Loading type="inline" text="Registrando..." color="#f8fffc" /> : "Registrarse"}
         </button>

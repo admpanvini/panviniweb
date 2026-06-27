@@ -17,9 +17,5 @@ export async function GET(req: Request) {
 
   saveTokens(saved);
 
-  return NextResponse.json({
-    success: true,
-    message: "Tokens guardados correctamente",
-    tokens: saved,
-  });
+  return NextResponse.redirect(new URL("/admin/documentos?drive=ok", req.url));
 }

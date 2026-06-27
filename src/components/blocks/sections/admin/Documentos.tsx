@@ -24,6 +24,7 @@ export default function Cuentas() {
   const searchParams = useSearchParams();
   const propiedadFromQuery = searchParams.get("propiedad");
   const [errorText,setErrorText]=useState('')
+  const [reconnectUrl,setReconnectUrl]=useState('/api/admin/google')
 
   const userCtx = useAdmin();
 
@@ -97,10 +98,12 @@ export default function Cuentas() {
     setLoading(false)
     if (!res.ok) {
       if (data?.error_type === 'google') {
-        setErrorText(data.details);
+        setErrorText(data.details || data.error || 'La conexión con google drive ha caducado.');
+        setReconnectUrl(data.reconnect_url || '/api/admin/google');
       }
       return;
     }
+    setErrorText('');
     const data_prop = data?.map((a:any, i:any) => ({
     ...a,
     propiedad: propiedades.find( s => s.propiedad_codigo==a.folder)?.propiedad_nombre || '-'
@@ -144,14 +147,22 @@ export default function Cuentas() {
     setLoading(true)
     setLoadingText("Eliminando el documento indicado..")
     setModal({ ...modal,open: false})
-    await fetch("/api/admin/deletedocument", {
+    const res = await fetch("/api/admin/deletedocument", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: id }),
     });
+    const data = await res.json();
     setModal({ open: false, id: null, titulo:''});
-    getDocumentos();
-    setLoading(true)
+    if (!res.ok) {
+      if (data?.error_type === 'google') {
+        setErrorText(data.error || 'La conexión con google drive ha caducado.');
+        setReconnectUrl(data.reconnect_url || '/api/admin/google');
+      }
+      setLoading(false)
+      return;
+    }
+    await getDocumentos();
   }
 
   return (
@@ -164,12 +175,15 @@ export default function Cuentas() {
         <div className="text-[var(--baseOscura-admin)]">
           {errorText && (
             <div>
+              <Button
+                className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 cursor-pointer mb-4"
+                onClick={() => { window.location.href = reconnectUrl; }}
+              >
+                Reestablecer conexión
+              </Button>
+              <br />
               La conexión con google drive ha caducado. <br /><br />
-              Reestablecé la conexión haciendo <a href={errorText} target="_blank" className="text-blue-500 underline">
-                click aquí
-              </a>
-              <br /><br />
-              <p className="text-xs break-all">Link : {errorText}</p>
+              <p className="text-xs break-all">Detalle : {errorText}</p>
             </div>
           )}
           <div className={`${errorText!=''?'hidden':''}`}>

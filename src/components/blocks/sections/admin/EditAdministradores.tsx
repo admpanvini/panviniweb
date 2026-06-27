@@ -17,11 +17,13 @@ export default function EditarAdministradores() {
   const [form, setForm] = useState({
     cuenta_titular: "",
     cuenta_email: "",
-    cuenta_estado: "",
-    cuenta_unidad_codigo:"",
+    cuenta_estado: "activo",
+    cuenta_unidad_codigo:"admin",
     propiedad_codigo:"",
-    cuenta_tipo:"",
-    propiedad_nombre:""
+    cuenta_tipo:"admin",
+    propiedad_nombre:"",
+    cuenta_clave:"",
+    cuenta_clave_2:""
   });
 
   // Si hay id, cargamos los datos existentes
@@ -36,17 +38,19 @@ export default function EditarAdministradores() {
       });
       setLoading(false)
       const data = await res.json();
-      if(data.lenght==0){return}
+      if(data.length==0){return}
       const p=data[0]
       console.log(p)
       setForm({
           cuenta_titular: p.cuenta_titular,
           cuenta_email: p.cuenta_email,
           cuenta_estado: p.cuenta_estado,
-          cuenta_unidad_codigo:p.cuenta_unidad_codigo,
-          propiedad_codigo: p.cuenta_unidad_codigo.substr(0,2),
+          cuenta_unidad_codigo:p.cuenta_unidad_codigo || "admin",
+          propiedad_codigo: "",
           cuenta_tipo:p.cuenta_tipo,
-          propiedad_nombre:''
+          propiedad_nombre:'',
+          cuenta_clave:'',
+          cuenta_clave_2:''
       });
   }
 
@@ -91,12 +95,22 @@ export default function EditarAdministradores() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrorMsg("");
+    if (!id && form.cuenta_clave !== form.cuenta_clave_2) {
+      setErrorMsg("Las claves no coinciden");
+      return;
+    }
     setLoading(true)
     setLoadingText("Gurdando los datos de la cuenta...")
+    const payload = {
+      id_cuenta: id ? Number(id) : null,
+      ...form,
+      cuenta_tipo: "admin",
+      cuenta_unidad_codigo: "admin"
+    };
     const res = await fetch("/api/admin/savecuenta", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id_cuenta: id ? Number(id) : null, ...form }),
+      body: JSON.stringify(payload),
     }); 
     setLoading(false)
     if (!res.ok) {
@@ -155,6 +169,26 @@ export default function EditarAdministradores() {
             >
               <option value="admin">Admin</option>
             </select>
+            {!id && (
+              <>
+                Clave inicial:
+                <input
+                  type="password"
+                  placeholder="Clave inicial"
+                  value={form.cuenta_clave}
+                  onChange={(e) => setForm({ ...form, cuenta_clave: e.target.value })}
+                  className="w-full border rounded px-3 py-2"
+                />
+                Repetir clave inicial:
+                <input
+                  type="password"
+                  placeholder="Repetir clave inicial"
+                  value={form.cuenta_clave_2}
+                  onChange={(e) => setForm({ ...form, cuenta_clave_2: e.target.value })}
+                  className="w-full border rounded px-3 py-2"
+                />
+              </>
+            )}
             {errorMsg && (
               <div className="bg-red-500 text-white px-3 py-2 rounded">
                 {errorMsg}

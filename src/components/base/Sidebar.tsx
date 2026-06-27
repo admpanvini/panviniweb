@@ -42,7 +42,7 @@ const links_admin= [
 ];
 
 
-export default function Sidebar({ className = "" }: { className?: string }) {
+export default function Sidebar({ className = "", onNavigate }: { className?: string, onNavigate?: () => void }) {
   const pathname = usePathname();
   const basePath: String= pathname.split('/')[1] || 'user';
   const css_color = basePath === "user" ? "" : "-admin";
@@ -58,6 +58,7 @@ export default function Sidebar({ className = "" }: { className?: string }) {
             <Link
               key={name}
               href={path}
+              onClick={onNavigate}
               className={`flex items-center gap-3 px-4 py-2 rounded transition ${
                 pathname === path
                   ? `text-[var(--baseClara${css_color})] font-semibold`

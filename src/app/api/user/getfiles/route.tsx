@@ -18,6 +18,12 @@ export async function POST(req: Request) {
         }
         return NextResponse.json(files|| [])
     } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return NextResponse.json({
+            error:"Error en la conexión con google drive",
+            error_type:"google",
+            details: message
+        }, { status: 400 })
         return NextResponse.json({error:"Error en la conexión con google drive", "details": error}, { status: 400 })
     }
 
