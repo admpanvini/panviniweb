@@ -107,7 +107,7 @@ export default function EditarUnidades() {
   }
 
   return (
-    <Card className="px-6 py-0 max-w-lg mx-auto text-[var(--baseOscura-admin)]">
+    <Card className="app-panel mx-auto max-w-5xl text-[var(--baseOscura-admin)]">
       {
         loading?
         (
@@ -118,7 +118,7 @@ export default function EditarUnidades() {
               {id ? "Editar Unidad" : "Nueva Unidad"}
             </h1>
             <p className="mb-2">{id ? `Id unidad: #${id}` : "Cree una nueva unidad"}</p>
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form onSubmit={handleSubmit} className="max-w-4xl space-y-4">
               Código de la unidad:
               <input
                 type="text"
@@ -127,7 +127,7 @@ export default function EditarUnidades() {
                 onChange={(e) =>
                   setForm({ ...form, unidad_codigo: e.target.value, propiedad_codigo: e.target.value?.substr(0,2) })
                 }
-                className="w-full border rounded px-3 py-2"
+                className="app-input"
               />
               Propiedad asociada:<br/>
               <input
@@ -135,14 +135,14 @@ export default function EditarUnidades() {
                 placeholder="Dirección"
                 value={form.propiedad_codigo}
                 disabled
-                className="w-[30%] border rounded px-3 py-2 bg-[#00000010]"
+                className="app-input inline-block w-[30%] bg-[#00000010]"
               />
               <input
                 type="text"
                 placeholder="Dirección"
                 value={form.propiedad_nombre}
                 disabled
-                className="w-[68%] ml-[2%] border rounded px-3 py-2 bg-[#00000010]"
+                className="app-input ml-[2%] inline-block w-[68%] bg-[#00000010]"
               />
               <br/>
               Nombre de la unidad:
@@ -151,7 +151,7 @@ export default function EditarUnidades() {
                 placeholder="Nombre"
                 value={form.unidad_nombre}
                 onChange={(e) => setForm({ ...form, unidad_nombre: e.target.value })}
-                className="w-full border rounded px-3 py-2"
+                className="app-input"
               />
               Titular de la unidad:
               <input
@@ -161,13 +161,13 @@ export default function EditarUnidades() {
                 onChange={(e) =>
                   setForm({ ...form, unidad_titular: e.target.value })
                 }
-                className="w-full border rounded px-3 py-2"
+                className="app-input"
               />
               Estado de la unidad:
               <select
                 value={form.unidad_estado}
                 onChange={(e) => setForm({ ...form, unidad_estado: e.target.value })}
-                className="w-full border rounded px-3 py-3"
+                className="app-input"
               >
                 <option value="pendiente">Pendiente</option>
                 <option value="activo">Activo</option>
@@ -181,7 +181,7 @@ export default function EditarUnidades() {
               )}
               <Button
                 type="submit"
-                className="cursor-pointer bg-[var(--baseOscura-admin)] text-white w-full border rounded px-3 py-3"
+                className="app-button w-full cursor-pointer"
               >
                 Guardar
               </Button>

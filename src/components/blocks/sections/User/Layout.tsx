@@ -11,7 +11,7 @@ function LayoutBase({ children }: { children: React.ReactNode }) {
   const { userData }  = useUser() || {};
   console.log("Data del usuario",userData)
   return (
-      <div className="h-screen flex flex-col">
+      <div className="app-shell theme-user">
         <Navbar onMenuClick={() => setSidebarOpen(true)} userName={userData?.cuenta_titular || '-'}/>
 
         <div className="flex flex-1 overflow-hidden">
@@ -28,7 +28,7 @@ function LayoutBase({ children }: { children: React.ReactNode }) {
 
           {/* Sidebar Mobile - Hace transición si está en el movil */}
           <div
-            className={`fixed inset-y-0 left-0 z-50 w-64 bg-white transform transition-transform duration-300 md:hidden ${
+            className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 md:hidden ${
               sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
           >
@@ -36,7 +36,11 @@ function LayoutBase({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Main - AQUI VA EL PAGE.TSX*/}
-          <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+          <main className="app-main">
+            <div className="app-page">
+              {children}
+            </div>
+          </main>
         </div>
       </div>
   );

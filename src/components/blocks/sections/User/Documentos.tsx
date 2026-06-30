@@ -1,6 +1,6 @@
 "use client";
 import { Card, Title, Text, Button } from "@tremor/react";
-import { Bell, Building, Eye, FileSpreadsheet, HomeIcon, MapPin } from "lucide-react";
+import { Bell, Building, Eye, FileSpreadsheet, HomeIcon, Key, MapPin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Loading } from "../../template/Loading";
 import { useUser } from "./UserContext";
@@ -66,44 +66,57 @@ export default function DocumentosPageDiv() {
     (
       <Loading type="replace" height="150px" text={loadingText} appType="user" />
     ) : ( 
-    <div>
-      <h1 className="flex items-center gap-2 text-[2em] text-[var(--baseOscura)] mb-4">
+    <div className="space-y-5">
+      <h1 className="app-title mb-4">
         <FileSpreadsheet className="w-6 h-6" />
         Documentos asociados a tu propiedad
       </h1>
-      <h2 className="flex items-center gap-2 text-[1.1em] text-[var(--baseOscura)] mb-[10px]">
-        <Building className="w-6 h-6" />
-        {userData?.propiedad_nombre}
-        <MapPin className="w-6 h-6" />
-        {userData?.propiedad_direccion}
-        <HomeIcon className="w-6 h-6" />
-        {userData?.unidad_nombre}
-      </h2>
+      <div className="property-summary">
+        <div className="property-item">
+          <span className="property-icon"><Building className="w-5 h-5" /></span>
+          <div><div className="property-label">Inmueble</div><div className="property-value">{userData?.propiedad_nombre}</div></div>
+        </div>
+        <div className="property-item">
+          <span className="property-icon"><MapPin className="w-5 h-5" /></span>
+          <div><div className="property-label">Direccion</div><div className="property-value">{userData?.propiedad_direccion}</div></div>
+        </div>
+        <div className="property-item">
+          <span className="property-icon"><HomeIcon className="w-5 h-5" /></span>
+          <div><div className="property-label">Unidad</div><div className="property-value">{userData?.unidad_nombre}</div></div>
+        </div>
+        <div className="property-item">
+          <span className="property-icon"><Key className="w-5 h-5" /></span>
+          <div><div className="property-label">Titular</div><div className="property-value">{userData?.unidad_titular}</div></div>
+        </div>
+      </div>
 
       <PdfModal url={pdfUrl} open={open} onClose={() => setOpen(false)} appType="user"/>  
       {errorText ? (
-        <Card className="text-[var(--baseOscura)]">
+        <Card className="app-panel text-[var(--baseOscura)]">
           <Title>Documentos no disponibles</Title>
           <Text>{errorText}</Text>
         </Card>
       ) : avisos.length === 0 ? (
-        <Card className="text-[var(--baseOscura)]">
+        <Card className="app-panel text-[var(--baseOscura)]">
           <Title>No se han encontrado documentos para tu propiedad</Title>
         </Card>
       ) : (
         avisos.map((n,i) => (
           <Card
             key={i}
-            className="mb-4 bg-[var(--baseSuperClara)] text-[var(--baseOscura)] rounded-[10px]"
-          >  <Button
-                className="cursor-pointer rounded-xl bg-[var(--baseOscura)] text-white float-right mt-[-10px]"
+            className="app-panel text-[var(--baseOscura)]"
+          >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <Title className="text-[var(--baseOscura)]">{n.name?.replaceAll('pdf','')}</Title>
+                <Button
+                className="app-button cursor-pointer"
                 onClick={() => {
                     setPdfUrl(n.webViewLink);
                     setOpen(true);
                     }}>
                     Abrir documento
               </Button>
-              <Title>{n.name?.replaceAll('pdf','')}</Title>
+              </div>
           </Card>
         ))
       )}

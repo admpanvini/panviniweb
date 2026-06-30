@@ -126,19 +126,19 @@ export default function Administradores() {
     )
     :(
       <div className="text-[var(--baseOscura-admin)]">
-          <h1 className="flex items-center gap-2 text-[2em] ">
+          <h1 className="app-title">
             <User2Icon /> Administradores
           </h1>
 
           {/* FILTROS */}
-          <div className="items-center my-3 gap-3">
+          <div className="filter-bar my-3">
             
             {/* Estado */}
-            Estado:
+            <span className="filter-label">Estado</span>
             <select
               value={estadoSeleccionado}
               onChange={(e) => setEstadoSeleccionado(e.target.value)}
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2.5 w-full max-w-[150px] mx-2"
+              className="app-input max-w-[170px]"
             >
               <option value="pendiente">Pendientes</option>
               <option value="activo">Activas</option>
@@ -147,16 +147,16 @@ export default function Administradores() {
             </select>
 
             {/* Buscador */}
-            Buscar:
+            <span className="filter-label">Buscar</span>
             <input
               type="text"
               placeholder="Buscar..."
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2 w-full max-w-[250px] mx-2"
+              className="app-input max-w-[260px]"
             />
             <Button
-              className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 float-right cursor-pointer"
+              className="app-button cursor-pointer"
               onClick={() => router.push("/admin/administradores/editar")}
             >
               Nuevo administrador
@@ -164,16 +164,28 @@ export default function Administradores() {
           </div>
 
           {/* Tabla */}
-          Total cuentas : { dataTable.filter((r:any) => r.cuenta_estado === "pendiente" || r.cuenta_estado === "activo").length } - Pendientes: { dataTable.filter((r:any) => r.cuenta_estado === "pendiente").length } - Activas: { dataTable.filter((r:any) => r.cuenta_estado === "activo").length } 
+          <div className="app-stat-grid">
+            <div className="app-stat-card">
+              <div className="app-stat-label">Total operativas</div>
+              <div className="app-stat-value">{ dataTable.filter((r:any) => r.cuenta_estado === "pendiente" || r.cuenta_estado === "activo").length }</div>
+            </div>
+            <div className="app-stat-card">
+              <div className="app-stat-label">Pendientes</div>
+              <div className="app-stat-value">{ dataTable.filter((r:any) => r.cuenta_estado === "pendiente").length }</div>
+            </div>
+            <div className="app-stat-card">
+              <div className="app-stat-label">Activas</div>
+              <div className="app-stat-value">{ dataTable.filter((r:any) => r.cuenta_estado === "activo").length }</div>
+            </div>
+          </div>
           {errorMsg && (
             <div className="text-[#a62942] text-sm italic my-2 px-3 py-2 rounded">
               Atención: {errorMsg}
             </div>
           )}
-          <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia-admin)]">
+          <Table className="app-table">
             <TableHead 
-              className="text-white"
-              style={{ background: "var(--colorTableHeader-admin)" }}>
+              className="app-table-head">
               <TableRow>
                 <TableHeaderCell className="px-4 py-2">ID</TableHeaderCell>
                 <TableHeaderCell className="px-4 py-2">Email</TableHeaderCell>
@@ -188,16 +200,16 @@ export default function Administradores() {
             <TableBody>
               {filteredData.length ? (
                 filteredData.map((row: any, i) => (
-                  <TableRow key={i} className="odd:bg-[rgba(0,0,0,.03)]">
+                  <TableRow key={i} className="app-table-row">
                     <TableCell className="px-2 py-2">{row.id_cuenta}</TableCell>
                     <TableCell className="px-2 py-2" style={{maxWidth:"100px"}}>{row.cuenta_titular}</TableCell>
                     <TableCell className="px-2 py-2">{row.cuenta_email}</TableCell>
                     <TableCell className="px-2 py-2">{row.cuenta_tipo}</TableCell>
-                    <TableCell className="px-2 py-2">{row.cuenta_estado}</TableCell>
+                    <TableCell className="px-2 py-2"><span className={`status-pill status-${row.cuenta_estado}`}>{row.cuenta_estado}</span></TableCell>
                     <TableCell className="px-2 py-2">{formatFechaArgentina(row.cuenta_conexion, "DMA", true)}</TableCell>
                     <TableCell className="px-4 py-2 flex gap-2 justify-center">
                       <Button
-                        className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                        className="app-icon-button cursor-pointer"
                         onClick={() => router.push(`/admin/administradores/editar?id=${row.id_cuenta}`)}
                       >
                         <Edit className="w-4 h-4" />
@@ -205,7 +217,7 @@ export default function Administradores() {
                       {row.cuenta_estado !== "activo" && (
                         <Button
                           title="Activar"
-                          className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                          className="app-icon-button cursor-pointer"
                           onClick={() => setModal({ open: true, row, estado: "activo" })}
                         >
                           <CircleCheck className="w-4 h-4" />
@@ -214,7 +226,7 @@ export default function Administradores() {
                       {row.cuenta_estado !== "eliminado" && (
                         <Button
                           title="Dar de baja"
-                          className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                          className="app-icon-button cursor-pointer"
                           onClick={() => setModal({ open: true, row, estado: "eliminado" })}
                         >
                           <Trash className="w-4 h-4" />
@@ -237,7 +249,7 @@ export default function Administradores() {
           {filteredData.length >= limit && (
             <div className="flex justify-center my-4">
               <Button
-                className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                className="app-button cursor-pointer"
                 onClick={() => setLimit(limit + 30)}
               >
                 Cargar más

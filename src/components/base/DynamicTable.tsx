@@ -21,10 +21,9 @@ export default function DynamicTable({ data }: Props) {
   const headers = Object.keys(data[0]);
 
   return (
-    <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia)]">
+    <Table className="app-table">
       <TableHead
-        className="text-[#FFF] text-left"
-        style={{ background: "var(--colorTableHeader)" }}
+        className="app-table-head text-left"
       >
         <TableRow>
           {headers.map((header) => (
@@ -35,9 +34,9 @@ export default function DynamicTable({ data }: Props) {
         </TableRow>
       </TableHead>
 
-      <TableBody className="bg-[var(--baseSuperClara)] text-[var(--baseOscura)]">
+      <TableBody className="bg-white text-[var(--baseOscura)]">
         {data.map((row, i) => (
-          <TableRow key={i} className="odd:bg-[rgba(0,0,0,.03)]">
+          <TableRow key={i} className="app-table-row">
             {headers.map((header) => (
               <TableCell key={header} className="px-4 py-2">
                 {row[header]}

@@ -165,55 +165,57 @@ export default function Cuentas() {
       <Loading type="replace" height="150px" text={loadingText} />
     )
     :(
-      <div className="text-[var(--baseOscura-admin)]">
-          <h1 className="flex items-center gap-2 text-[2em] ">
+      <div className="space-y-5 text-[var(--baseOscura-admin)]">
+          <h1 className="app-title">
             <User2Icon /> Cuentas
           </h1>
 
           {/* FILTROS */}
-          <div className="items-center my-3 gap-3">
-            
-            {/* Propiedad */}
-            Propiedad:
-            <select
-              value={propiedadSeleccionada || ""}
-              onChange={(e) => setPropiedadSeleccionada(e.target.value || null)}
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2.5 w-full max-w-[200px] mx-2"
-            >
-              <option value="">Filtro por propiedad</option>
-              <option value="admin">Admin</option>
-              {propiedades.map((p: any) => (
-                <option key={p.propiedad_codigo} value={p.propiedad_codigo}>
-                  {p.propiedad_nombre} ({p.propiedad_codigo})
-                </option>
-              ))}
-            </select>
+          <div className="filter-bar">
+            <label className="filter-item">
+              <span className="filter-label">Propiedad</span>
+              <select
+                value={propiedadSeleccionada || ""}
+                onChange={(e) => setPropiedadSeleccionada(e.target.value || null)}
+                className="app-input max-w-[220px]"
+              >
+                <option value="">Filtro por propiedad</option>
+                <option value="admin">Admin</option>
+                {propiedades.map((p: any) => (
+                  <option key={p.propiedad_codigo} value={p.propiedad_codigo}>
+                    {p.propiedad_nombre} ({p.propiedad_codigo})
+                  </option>
+                ))}
+              </select>
+            </label>
 
-            {/* Estado */}
-            Estado:
-            <select
-              value={estadoSeleccionado}
-              onChange={(e) => setEstadoSeleccionado(e.target.value)}
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2.5 w-full max-w-[150px] mx-2"
-            >
-              <option value="pendientes">Pendientes</option>
-              <option value="activas">Activas</option>
-              <option value="eliminadas">Eliminadas</option>
-              <option value="todas">Todas</option>
-            </select>
+            <label className="filter-item">
+              <span className="filter-label">Estado</span>
+              <select
+                value={estadoSeleccionado}
+                onChange={(e) => setEstadoSeleccionado(e.target.value)}
+                className="app-input max-w-[170px]"
+              >
+                <option value="pendientes">Pendientes</option>
+                <option value="activas">Activas</option>
+                <option value="eliminadas">Eliminadas</option>
+                <option value="todas">Todas</option>
+              </select>
+            </label>
 
-            {/* Buscador */}
-            Buscar:
-            <input
-              type="text"
-              placeholder="Buscar..."
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2 w-full max-w-[250px] mx-2"
-            />
+            <label className="filter-item">
+              <span className="filter-label">Buscar</span>
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="app-input max-w-[260px]"
+              />
+            </label>
 
             <Button
-              className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 float-right cursor-pointer"
+              className="app-button cursor-pointer"
               onClick={() => router.push("/admin/cuentas/editar")}
             >
               Nueva cuenta
@@ -221,16 +223,28 @@ export default function Cuentas() {
           </div>
 
           {/* Tabla */}
-          Total cuentas : { dataTable.filter((r:any) => r.cuenta_estado === "pendiente" || r.cuenta_estado === "activo").length } - Pendientes: { dataTable.filter((r:any) => r.cuenta_estado === "pendiente").length } - Activas: { dataTable.filter((r:any) => r.cuenta_estado === "activo").length } 
+          <div className="app-stat-grid">
+            <div className="app-stat-card">
+              <div className="app-stat-label">Total operativas</div>
+              <div className="app-stat-value">{ dataTable.filter((r:any) => r.cuenta_estado === "pendiente" || r.cuenta_estado === "activo").length }</div>
+            </div>
+            <div className="app-stat-card">
+              <div className="app-stat-label">Pendientes</div>
+              <div className="app-stat-value">{ dataTable.filter((r:any) => r.cuenta_estado === "pendiente").length }</div>
+            </div>
+            <div className="app-stat-card">
+              <div className="app-stat-label">Activas</div>
+              <div className="app-stat-value">{ dataTable.filter((r:any) => r.cuenta_estado === "activo").length }</div>
+            </div>
+          </div>
           {errorMsg && (
             <div className="text-[#a62942] text-sm italic my-2 px-3 py-2 rounded">
               Atención: {errorMsg}
             </div>
           )}
-          <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia-admin)]">
+          <Table className="app-table">
             <TableHead 
-              className="text-white"
-              style={{ background: "var(--colorTableHeader-admin)" }}>
+              className="app-table-head">
               <TableRow>
                 <TableHeaderCell className="px-4 py-2">ID</TableHeaderCell>
                 <TableHeaderCell className="px-4 py-2">Email</TableHeaderCell>
@@ -248,7 +262,7 @@ export default function Cuentas() {
             <TableBody>
               {filteredData.length ? (
                 filteredData.map((row: any, i) => (
-                  <TableRow key={i} className="odd:bg-[rgba(0,0,0,.03)]">
+                  <TableRow key={i} className="app-table-row">
                     <TableCell className="px-2 py-2">{row.id_cuenta}</TableCell>
                     <TableCell className="px-2 py-2" style={{maxWidth:"100px"}}>{row.cuenta_titular}</TableCell>
                     <TableCell className="px-2 py-2">{row.cuenta_email}</TableCell>
@@ -256,11 +270,11 @@ export default function Cuentas() {
                     <TableCell className="px-2 py-2">{row.unidad_nombre}</TableCell>
                     <TableCell className="px-2 py-2">{row.propiedad_nombre}</TableCell>
                     <TableCell className="px-2 py-2">{row.cuenta_tipo}</TableCell>
-                    <TableCell className="px-2 py-2">{row.cuenta_estado}</TableCell>
+                    <TableCell className="px-2 py-2"><span className={`status-pill status-${row.cuenta_estado}`}>{row.cuenta_estado}</span></TableCell>
                     <TableCell className="px-2 py-2">{formatFechaArgentina(row.cuenta_conexion, "DMA", true)}</TableCell>
                     <TableCell className="px-4 py-2 flex gap-2 justify-center">
                       <Button
-                        className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                        className="app-icon-button cursor-pointer"
                         onClick={() => router.push(`/admin/cuentas/editar?id=${row.id_cuenta}`)}
                       >
                         <Edit className="w-4 h-4" />
@@ -268,7 +282,7 @@ export default function Cuentas() {
                       {row.cuenta_estado !== "activo" && (
                         <Button
                           title="Activar"
-                          className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                          className="app-icon-button cursor-pointer"
                           onClick={() => setModal({ open: true, row, estado: "activo" })}
                         >
                           <CircleCheck className="w-4 h-4" />
@@ -277,7 +291,7 @@ export default function Cuentas() {
                       {row.cuenta_estado !== "eliminado" && (
                         <Button
                           title="Dar de baja"
-                          className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                          className="app-icon-button cursor-pointer"
                           onClick={() => setModal({ open: true, row, estado: "eliminado" })}
                         >
                           <Trash className="w-4 h-4" />
@@ -300,7 +314,7 @@ export default function Cuentas() {
           {filteredData.length >= limit && (
             <div className="flex justify-center my-4">
               <Button
-                className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                className="app-button cursor-pointer"
                 onClick={() => setLimit(limit + 30)}
               >
                 Cargar más

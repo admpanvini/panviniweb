@@ -45,41 +45,41 @@ export default function LoginForm() {
     };
     return(
         <div>
-            <form onSubmit={handleSubmit} className="space-y-3 text-[var(--baseSuperClara)] border-[var(--baseClara)]  focus:ring-[var(--baseClara)] ">
+            <form onSubmit={handleSubmit} className="space-y-3">
                 <input
                     type="text"
                     placeholder="Usuario"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg border focus:ring-2  outline-none placeholder:text-[var(--baseClara)]"
+                    className="auth-field"
                 />
                 <input
                     type="text"
                     placeholder="Unidad"
                     value={unidad_codigo}
                     onChange={(e) => setUnidad_codigo(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+                    className="auth-field"
                 />
                 <input
                     type="password"
                     placeholder="Contraseña"
                     value={clave}
                     onChange={(e) => setClave(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+                    className="auth-field"
                 />
 
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition disabled:opacity-80"
+                    className="auth-button cursor-pointer"
                 >
                 {loading ? <Loading type="inline" text="Iniciando sesión..." color="#f8fffc"/> : "Iniciar Sesión"}
                 </button>
             </form>
-            <div className="mt-4 text-center text-sm text-gray-100">
+            <div className="auth-helper">
                 <div>
                     {error?.map((e, i) => (
-                    <p key={i} className="text-[#e86b6b]">{e}</p>
+                    <p key={i} className="auth-error">{e}</p>
                     ))}
                     {
                         error?<br/>:''
@@ -87,13 +87,13 @@ export default function LoginForm() {
                 </div>
             <p>
                 ¿No tenés cuenta?{" "}
-                <a href="/auth/signup" className="text-[var(--baseClara)] hover:underline">
+                <a href="/auth/signup" className="auth-link">
                 Registrate
                 </a>
                 
             </p>
             <p>
-                <a href="/auth/recover" className="text-[var(--baseClara)] hover:underline">
+                <a href="/auth/recover" className="auth-link">
                 ¿Olvidaste tu clave?
                 </a>
             </p>

@@ -1,6 +1,6 @@
 "use client";
 import { Card, Title, Text } from "@tremor/react";
-import { Bell, Building, HomeIcon, MapPin } from "lucide-react";
+import { Bell, Building, HomeIcon, Key, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Loading } from "../../template/Loading";
@@ -74,27 +74,37 @@ export default function AvisosPageDiv() {
   }, []);
 
   return (
-    <div>
+    <div className="space-y-5">
     {
           loading || !userCtx?.userData? 
           (
             <Loading type="replace" height="150px" text={loadingText} appType="user" />
           ) : (
     <div>
-      <h1 className="flex items-center gap-2 text-[2em] text-[var(--baseOscura)] mb-4">
+      <h1 className="app-title mb-4">
         <Bell className="w-6 h-6" />
         Tus avisos
       </h1>
-      <h2 className="flex items-center gap-2 text-[1.1em] text-[var(--baseOscura)] mb-[10px]">
-        <Building className="w-6 h-6" />
-        {userData?.propiedad_nombre}
-        <MapPin className="w-6 h-6" />
-        {userData?.propiedad_direccion}
-        <HomeIcon className="w-6 h-6" />
-        {userData?.unidad_nombre}
-      </h2>
+      <div className="property-summary">
+        <div className="property-item">
+          <span className="property-icon"><Building className="w-5 h-5" /></span>
+          <div><div className="property-label">Inmueble</div><div className="property-value">{userData?.propiedad_nombre}</div></div>
+        </div>
+        <div className="property-item">
+          <span className="property-icon"><MapPin className="w-5 h-5" /></span>
+          <div><div className="property-label">Direccion</div><div className="property-value">{userData?.propiedad_direccion}</div></div>
+        </div>
+        <div className="property-item">
+          <span className="property-icon"><HomeIcon className="w-5 h-5" /></span>
+          <div><div className="property-label">Unidad</div><div className="property-value">{userData?.unidad_nombre}</div></div>
+        </div>
+        <div className="property-item">
+          <span className="property-icon"><Key className="w-5 h-5" /></span>
+          <div><div className="property-label">Titular</div><div className="property-value">{userData?.unidad_titular}</div></div>
+        </div>
+      </div>
       {avisos.length === 0 ? (
-        <Card className="bg-[var(--baseSuperClara)] text-[var(--baseOscura)] border border-[var(--baseOscura)]">
+        <Card className="app-panel text-[var(--baseOscura)]">
           <Title>No tenés avisos</Title>
           <Text>Cuando haya nuevas notificaciones, aparecerán acáAAA.</Text>
         </Card>
@@ -102,13 +112,13 @@ export default function AvisosPageDiv() {
         avisos.map((n) => (
           <Card
             key={n.id_notificacion}
-            className="mb-4 bg-[var(--baseSuperClara)] text-[var(--baseOscura)] rounded-[10px]"
+            className="notice-card text-[var(--baseOscura)]"
           >
             <Title>{n.notificacion_titulo}</Title>
             <Text className="text-[.8em]">{n.notificacion}</Text>
             <Link href={getAvisoLink(n.notificacion_seccion)}>
                   <button
-                    className={`px-3 mt-[10px] py-1 text-sm bg-[var(--baseOscura)] text-white rounded cursor-pointer ${n.notificacion_seccion=="0" ? "hidden":""}`}
+                    className={`app-button mt-3 cursor-pointer ${n.notificacion_seccion=="0" ? "hidden":""}`}
                   >
                     {getAvisoTexto(n.notificacion_seccion)}
                     <span className="hidden">

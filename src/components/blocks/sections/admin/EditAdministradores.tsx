@@ -122,7 +122,7 @@ export default function EditarAdministradores() {
   }
 
   return (
-    <Card className="px-6 py-0 max-w-lg mx-auto text-[var(--baseOscura-admin)]">
+    <Card className="app-panel mx-auto max-w-5xl text-[var(--baseOscura-admin)]">
       { loading?
       (
         <Loading type="replace" height="150px" text={loadingText} />
@@ -132,14 +132,14 @@ export default function EditarAdministradores() {
             {id ? "Editar Cuenta" : "Nueva Cuenta"}
           </h1>
           <p className="mb-2">{id ? `Id Cuenta: #${id}` : "Cree una nueva propiedad"}</p>
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="max-w-4xl space-y-4">
             Titular:
             <input
               type="text"
               placeholder="Nombre"
               value={form.cuenta_titular}
               onChange={(e) => setForm({ ...form, cuenta_titular: e.target.value })}
-              className="w-full border rounded px-3 py-2"
+              className="app-input"
             />
             Email de cuenta:
             <input
@@ -147,13 +147,13 @@ export default function EditarAdministradores() {
               placeholder="Dirección"
               value={form.cuenta_email}
               onChange={(e) => setForm({ ...form, cuenta_email: e.target.value })}
-              className="w-full border rounded px-3 py-2"
+              className="app-input"
             />
             Estado de la cuenta:
             <select
               value={form.cuenta_estado}
               onChange={(e) => setForm({ ...form, cuenta_estado: e.target.value })}
-              className="w-full border rounded px-3 py-3"
+              className="app-input"
             >
               <option value="pendiente">Pendiente</option>
               <option value="activo">Activo</option>
@@ -164,7 +164,7 @@ export default function EditarAdministradores() {
             <select
               value={form.cuenta_tipo}
               onChange={(e) => setForm({ ...form, cuenta_tipo: e.target.value })}
-              className="w-full border rounded px-3 py-3"
+              className="app-input"
               disabled
             >
               <option value="admin">Admin</option>
@@ -177,7 +177,7 @@ export default function EditarAdministradores() {
                   placeholder="Clave inicial"
                   value={form.cuenta_clave}
                   onChange={(e) => setForm({ ...form, cuenta_clave: e.target.value })}
-                  className="w-full border rounded px-3 py-2"
+                  className="app-input"
                 />
                 Repetir clave inicial:
                 <input
@@ -185,7 +185,7 @@ export default function EditarAdministradores() {
                   placeholder="Repetir clave inicial"
                   value={form.cuenta_clave_2}
                   onChange={(e) => setForm({ ...form, cuenta_clave_2: e.target.value })}
-                  className="w-full border rounded px-3 py-2"
+                  className="app-input"
                 />
               </>
             )}
@@ -196,7 +196,7 @@ export default function EditarAdministradores() {
             )}
             <Button
               type="submit"
-              className="cursor-pointer bg-[var(--baseOscura-admin)] text-white w-full border rounded px-3 py-3"
+              className="app-button w-full cursor-pointer"
             >
               Guardar
             </Button>

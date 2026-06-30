@@ -110,7 +110,7 @@ export default function EditarPropiedad() {
   }
 
   return (
-    <Card className="px-6 py-0 max-w-lg mx-auto text-[var(--baseOscura-admin)]">
+    <Card className="app-panel mx-auto max-w-5xl text-[var(--baseOscura-admin)]">
       {
         loading?(
           <Loading type="replace" height="150px" text={loadingText} />
@@ -119,14 +119,14 @@ export default function EditarPropiedad() {
           <h1 className="flex items-center gap-2 text-[2em]">
             {id ? "Editar propiedad" : "Nueva propiedad"}
           </h1>
-          <form onSubmit={handleSubmit} className="space-y-3">
+          <form onSubmit={handleSubmit} className="max-w-4xl space-y-4">
             {/* Campos normales */}
             <input
               type="text"
               placeholder="Nombre"
               value={form.propiedad_nombre}
               onChange={(e) => setForm({ ...form, propiedad_nombre: e.target.value })}
-              className="w-full border rounded px-3 py-2"
+              className="app-input"
             />
 
             <input
@@ -136,7 +136,7 @@ export default function EditarPropiedad() {
               onChange={(e) =>
                 setForm({ ...form, propiedad_direccion: e.target.value })
               }
-              className="w-full border rounded px-3 py-2"
+              className="app-input"
             />
 
             <input
@@ -146,7 +146,7 @@ export default function EditarPropiedad() {
               onChange={(e) =>
                 setForm({ ...form, propiedad_codigo: e.target.value })
               }
-              className="w-full border rounded px-3 py-2"
+              className="app-input"
             />
 
             {/* --- Contactos dinámicos --- */}
@@ -159,7 +159,7 @@ export default function EditarPropiedad() {
                   placeholder="Nombre"
                   value={c.nombre}
                   onChange={(e) => updateContacto(i, "nombre", e.target.value)}
-                  className="w-full border border-[var(--baseClara-admin)] rounded px-3 py-2"
+                  className="app-input"
                 />
 
                 <input
@@ -167,13 +167,13 @@ export default function EditarPropiedad() {
                   placeholder="Dato (tel/email/etc)"
                   value={c.dato}
                   onChange={(e) => updateContacto(i, "dato", e.target.value)}
-                  className="w-full border border-[var(--baseClara-admin)]  rounded px-3 py-2"
+                  className="app-input"
                 />
 
                 <select
                   value={c.tipo}
                   onChange={(e) => updateContacto(i, "tipo", e.target.value)}
-                  className="w-full border border-[var(--baseClara-admin)] rounded px-3 py-2"
+                  className="app-input"
                 >
                   <option value="phone">Teléfono</option>
                   <option value="wa">WhatsApp</option>
@@ -205,7 +205,7 @@ export default function EditarPropiedad() {
 
             <Button
               type="submit"
-              className="cursor-pointer bg-[var(--baseOscura-admin)] w-full text-white mt-2 px-3 py-2 rounded"
+              className="app-button w-full cursor-pointer"
             >
               Guardar
             </Button>

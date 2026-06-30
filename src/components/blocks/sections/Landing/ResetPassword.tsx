@@ -98,11 +98,11 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
   if (!tokenValid) {
     return (
-      <div className="text-center text-white space-y-4">
+      <div className="auth-message">
         <p>{error || "El link no es valido o ya vencio"}</p>
         <a
           href="/auth/recover"
-          className="inline-block bg-[#9099f5] px-4 py-2 rounded-lg"
+          className="auth-button inline-block"
         >
           Pedir nuevo link
         </a>
@@ -112,11 +112,11 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
   if (success) {
     return (
-      <div className="text-center text-white space-y-4">
+      <div className="auth-message">
         <p>Tu clave fue actualizada correctamente.</p>
         <a
           href="/auth"
-          className="inline-block bg-[#9099f5] px-4 py-2 rounded-lg"
+          className="auth-button inline-block"
         >
           Iniciar sesion
         </a>
@@ -126,32 +126,32 @@ export default function ResetPasswordForm({ token }: { token: string }) {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="space-y-3 text-[var(--baseSuperClara)] border-[var(--baseClara)] focus:ring-[var(--baseClara)]">
+      <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="password"
           placeholder="Nueva clave"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
         <input
           type="password"
           placeholder="Repetir nueva clave"
           value={repeat}
           onChange={(e) => setRepeat(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition disabled:opacity-80"
+          className="auth-button cursor-pointer"
         >
           {loading ? <Loading type="inline" text="Guardando..." color="#f8fffc" /> : "Guardar nueva clave"}
         </button>
 
         {error && (
-          <p className="text-red-400 text-center text-sm">{error}</p>
+          <p className="auth-error">{error}</p>
         )}
       </form>
     </div>

@@ -172,11 +172,11 @@ export default function Cuentas() {
         <Loading type="replace" height="150px" text={loadingText} />
       ):
       (
-        <div className="text-[var(--baseOscura-admin)]">
+        <div className="space-y-5 text-[var(--baseOscura-admin)]">
           {errorText && (
-            <div>
+            <div className="app-panel">
               <Button
-                className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 cursor-pointer mb-4"
+                className="app-button cursor-pointer mb-4"
                 onClick={() => { window.location.href = reconnectUrl; }}
               >
                 Reestablecer conexión
@@ -187,19 +187,19 @@ export default function Cuentas() {
             </div>
           )}
           <div className={`${errorText!=''?'hidden':''}`}>
-          <h1 className="flex items-center gap-2 text-[2em] ">
+          <h1 className="app-title">
             <FileArchiveIcon /> Documentos
             </h1>
             <PdfModal url={pdfUrl} open={open} onClose={() => setOpen(false)} />
             {/* FILTROS */}
-            <div className="items-center my-3 gap-3">
+            <div className="filter-bar my-4">
               
               {/* Propiedad */}
-              Filtrar propiedad:
+              <span className="filter-label">Propiedad</span>
               <select
                 value={propiedadSeleccionada || ""}
                 onChange={(e) => setPropiedadSeleccionada(e.target.value || null)}
-                className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2.5 w-full max-w-[200px] mx-2"
+                className="app-input max-w-[220px]"
               >
                 <option value="">Filtro por propiedad</option>
                 {propiedades.map((p: any) => (
@@ -211,17 +211,17 @@ export default function Cuentas() {
 
               
               {/* Buscador */}
-              Buscar texto:
+              <span className="filter-label">Buscar</span>
               <input
                 type="text"
                 placeholder="Buscar..."
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
-                className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2 w-full max-w-[250px] mx-2"
+                className="app-input max-w-[260px]"
               />
 
               <Button
-                className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 float-right cursor-pointer"
+                className="app-button cursor-pointer"
                 onClick={() => router.push("/admin/documentos/crear")}
               >
                 Nuevo documento
@@ -229,8 +229,8 @@ export default function Cuentas() {
             </div>
 
             {/* Tabla */}
-            <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia-admin)]">
-              <TableHead style={{ background: "var(--colorTableHeader-admin)" }}>
+            <Table className="app-table">
+              <TableHead className="app-table-head">
                 <TableRow>
                   <TableHeaderCell className="px-4 py-2 text-white">Propiedad</TableHeaderCell>
                   <TableHeaderCell className="px-4 py-2 text-white">Tipo</TableHeaderCell>
@@ -243,14 +243,14 @@ export default function Cuentas() {
               <TableBody>
                 {filteredData.length ? (
                   filteredData.map((row: any, i) => (
-                    <TableRow key={i} className="odd:bg-[rgba(0,0,0,.03)]">
+                    <TableRow key={i} className="app-table-row">
                       <TableCell className="px-2 py-2">{row.folder} - {row.propiedad}</TableCell>
                       <TableCell className="px-2 py-2">{row.mimeType.replace("application/","").replace("image/","").toUpperCase()}</TableCell>
                       <TableCell className="px-2 py-2">{row.name}</TableCell>
                       <TableCell className="px-2 py-2">{formatFechaArgentina(row.createdTime, "DMA", true)}</TableCell>
                       <TableCell className="px-2 py-2 flex justify-center">
                         <Button
-                          className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                          className="app-button !px-3 !py-2 cursor-pointer"
                           onClick={() => {
                               setPdfUrl(row.webViewLink);
                               setOpen(true);
@@ -258,7 +258,7 @@ export default function Cuentas() {
                               <Eye className="w-4 h-4" />
                         </Button>
                         <Button
-                          className="rounded-xl bg-[var(--baseOscura-admin)] text-white cursor-pointer"
+                          className="app-button !px-3 !py-2 cursor-pointer"
                           onClick={() => setModal({ open: true, id: row.id , titulo:row.name })}
                         >  <Trash className="w-4 h-4" />
                         </Button>
@@ -279,7 +279,7 @@ export default function Cuentas() {
             {filteredData.length >= limit && (
               <div className="flex justify-center my-4">
                 <Button
-                  className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white"
+                  className="app-button cursor-pointer"
                   onClick={() => setLimit(limit + 30)}
                 >
                   Cargar más
@@ -296,7 +296,7 @@ export default function Cuentas() {
                     <Trash className="w-13 h-13"/>
                     <p className="">¿Estas seguro de eliminar este documento?</p>
                   </div>
-                  <p className="text-black text-[14px] my-3">Documento <b>"{modal.titulo}"</b></p>
+                  <p className="text-[var(--appOscura)] text-[14px] my-3">Documento <b>"{modal.titulo}"</b></p>
                 </>
               }
               onCancel={() => setModal({ open: false, id: null , titulo:''})}

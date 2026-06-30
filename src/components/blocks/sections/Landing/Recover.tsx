@@ -45,11 +45,11 @@ export default function RecoverPasswordForm() {
 
   if (success) {
     return (
-      <div className="text-center text-white space-y-4">
+      <div className="auth-message">
         <p>Si los datos son correctos, te enviamos un email para cargar una nueva clave.</p>
         <a
           href="/auth"
-          className="inline-block bg-[#9099f5] px-4 py-2 rounded-lg"
+          className="auth-button inline-block"
         >
           Volver al inicio
         </a>
@@ -59,37 +59,37 @@ export default function RecoverPasswordForm() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="space-y-3 text-[var(--baseSuperClara)] border-[var(--baseClara)] focus:ring-[var(--baseClara)]">
+      <form onSubmit={handleSubmit} className="space-y-3">
         <input
           type="text"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
         <input
           type="text"
           placeholder="Unidad"
           value={unidad_codigo}
           onChange={(e) => setUnidadCodigo(e.target.value)}
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition disabled:opacity-80"
+          className="auth-button cursor-pointer"
         >
           {loading ? <Loading type="inline" text="Enviando..." color="#f8fffc" /> : "Enviar link"}
         </button>
 
         {error && (
-          <p className="text-red-400 text-center text-sm">{error}</p>
+          <p className="auth-error">{error}</p>
         )}
       </form>
 
-      <div className="mt-4 text-center text-sm text-gray-300">
-        <a href="/auth" className="text-[#9099f5] hover:underline">
+      <div className="auth-helper">
+        <a href="/auth" className="auth-link">
           Volver al inicio
         </a>
       </div>

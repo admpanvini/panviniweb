@@ -66,11 +66,11 @@ export default function SignUpForm() {
 
   if (success) {
     return (
-      <div className="text-center text-white space-y-4">
+      <div className="auth-message">
         <p>Tu cuenta fue creada y quedo pendiente de aprobacion.</p>
         <a
           href="/auth"
-          className="inline-block bg-[#9099f5] px-4 py-2 rounded-lg"
+          className="auth-button inline-block"
         >
           Volver al inicio
         </a>
@@ -85,18 +85,17 @@ export default function SignUpForm() {
           name="name"
           onChange={handleChange}
           placeholder="Nombre"
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
         <select
           name="cuenta_tipo"
           onChange={handleChange}
-          className="w-full px-4 py-2 rounded-lg border border-[#FFF] focus:ring-2 outline-none"
-          style={{ color: form.cuenta_tipo == "" ? "var(--baseClara)" : "#FFF" }}
+          className="auth-field"
         >
-          <option value="" className={`text-[var(--baseOscura)]`}>Elegir tipo de cuenta</option>
-          <option value="inquilino" className={`text-[var(--baseOscura)]`}>Inquilino</option>
-          <option value="propietario" className={`text-[var(--baseOscura)]`}>Propietario</option>
-          <option value="inmobiliaria" className={`text-[var(--baseOscura)]`}>Inmobiliaria</option>
+          <option value="">Elegir tipo de cuenta</option>
+          <option value="inquilino">Inquilino</option>
+          <option value="propietario">Propietario</option>
+          <option value="inmobiliaria">Inmobiliaria</option>
         </select>
 
         <input
@@ -104,14 +103,14 @@ export default function SignUpForm() {
           onChange={handleChange}
           placeholder="Unidad"
           autoComplete="false"
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
 
         <input
           name="email"
           onChange={handleChange}
           placeholder="Email"
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
 
         <input
@@ -119,7 +118,7 @@ export default function SignUpForm() {
           name="password"
           onChange={handleChange}
           placeholder="Clave"
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]"
+          className="auth-field"
         />
 
         <input
@@ -127,26 +126,26 @@ export default function SignUpForm() {
           name="repeat"
           onChange={handleChange}
           placeholder="Repetir clave"
-          className="w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none placeholder:text-[var(--baseClara)]" 
+          className="auth-field" 
         />
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[var(--baseClara)] text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-[var(--baseOscura)] transition disabled:opacity-80"
+          className="auth-button cursor-pointer"
         >
           { loading ? <Loading type="inline" text="Registrando..." color="#f8fffc" /> : "Registrarse"}
         </button>
 
         {error && (
-          <p className="text-red-400 text-center  text-sm">{error}</p>
+          <p className="auth-error">{error}</p>
         )}
       </form>
 
-      <div className="mt-4 text-center text-sm text-gray-300">
+      <div className="auth-helper">
         <p>
           ¿Ya tenés cuenta?{" "}
-          <a href="/auth" className="text-[#9099f5] hover:underline">
+          <a href="/auth" className="auth-link">
             Iniciá sesión
           </a>
         </p>

@@ -68,32 +68,31 @@ export default function Propiedades() {
       (
         <Loading type="replace" height="150px" text={loadingText} />
       ) : (
-        <div className="text-[var(--baseOscura-admin)]">
-          <h1 className="flex items-center gap-2 text-[2em] text-[var(--baseOscura-admin)]">
+        <div className="space-y-5 text-[var(--baseOscura-admin)]">
+          <h1 className="app-title">
             <Building />Propiedades
           </h1>
 
           {/* 🔍 Buscador + Botón */}
-          <div className="items-center my-3 gap-3">
-            Buscar texto:<input
+          <div className="filter-bar my-3">
+            <span className="filter-label">Buscar</span><input
               type="text"
               placeholder="Filtrar por código, nombre o dirección..."
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2 w-full max-w-[400px] focus:outline-none focus:ring-1 focus:ring-[var(--baseOscura-admin)] mx-2"
+              className="app-input max-w-[420px]"
             />
 
-            <Button className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 float-right cursor-pointer"
+            <Button className="app-button cursor-pointer"
             onClick={() => router.push(`/admin/propiedades/editar`)}>
               Nueva propiedad
             </Button>
           </div>
 
           {/* 🧾 Tabla */}
-            <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia-admin)]">
+            <Table className="app-table">
               <TableHead
-                className="text-white"
-                style={{ background: "var(--colorTableHeader-admin)" }}
+                className="app-table-head"
               >
                 <TableRow>
                   <TableHeaderCell className="px-4 py-2"></TableHeaderCell>
@@ -111,7 +110,7 @@ export default function Propiedades() {
               <TableBody className="text-[var(--baseOscura-admin)]">
                 {filteredData.length > 0 ? (
                   filteredData.map((row, i) => (
-                    <TableRow key={i} className="odd:bg-[rgba(0,0,0,.03)] p-0">
+                    <TableRow key={i} className="app-table-row">
                       <TableCell className="px-4 py-1">
                         {row.codigo}
                       </TableCell>
@@ -131,13 +130,13 @@ export default function Propiedades() {
                         <a title="Ver cuentas" className="cursor-pointer" onClick={() => router.push(`/admin/cuentas?propiedad=${row.codigo}`)}>{row.cuentas_pendientes}</a>
                       </TableCell>
                       <TableCell className="flex justify-center gap-2 px-4 py-1">
-                        <Button title="Documentos" className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white " onClick={() => router.push(`/admin/documentos?propiedad=${row.codigo}`)}>
+                        <Button title="Documentos" className="app-icon-button cursor-pointer" onClick={() => router.push(`/admin/documentos?propiedad=${row.codigo}`)}>
                             <Folder className="w-4 h-4" />
                         </Button>
-                        <Button title="Notificaciones" className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white " onClick={() => router.push(`/admin/notificaciones?propiedad=${row.Id}`)}>
+                        <Button title="Notificaciones" className="app-icon-button cursor-pointer" onClick={() => router.push(`/admin/notificaciones?propiedad=${row.Id}`)}>
                             <Bell className="w-4 h-4" />
                         </Button>
-                        <Button title="Editar" className="cursor-pointer rounded-xl bg-[var(--baseOscura-admin)] text-white " onClick={() => router.push(`/admin/propiedades/editar?id=${row.Id}`)}>
+                        <Button title="Editar" className="app-icon-button cursor-pointer" onClick={() => router.push(`/admin/propiedades/editar?id=${row.Id}`)}>
                             <Edit className="w-4 h-4" />
                         </Button>
                       </TableCell>

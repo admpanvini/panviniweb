@@ -158,59 +158,71 @@ export default function Cuenta() {
       <Loading type="replace" height="150px" text={loadingText} appType="user" />
     )
     :(
-    <div>
-        <h1 className="flex items-center gap-2 text-[2em] text-[var(--baseOscura)] mb-4">
+    <div className="space-y-5">
+        <h1 className="app-title mb-4">
         <User className="w-6 h-6" />
         Tu cuenta
         </h1>
-        <h2 className="flex items-center my-[20px] gap-2 text-[1.5em] text-[var(--baseOscura)] mb-[10px] border-t-[1px] border-[var(--baseClara)] pt-[10px]">
-        <BookOpen className="w-6 h-6" /> Datos de la unidad
-        </h2>
-        <h2 className="sm:flex items-center gap-2 text-[.9em] my-[20px] ml-[5px] text-[var(--baseOscura)] mb-[10px]">
-          <div className="flex my-[8px]">
-            <Building className="w-6 h-6 mr-1" />
-            {userData?.propiedad_nombre}
-          </div>
-          <div className="flex my-[8px]">
-            <MapPin className="w-6 h-6 mr-1" />
-            {userData?.propiedad_direccion}
-          </div>
-          <div className="flex my-[8px]">
-            <HomeIcon className="w-6 h-6 mr-1" />
-            {userData?.unidad_nombre}
-          </div>
-          <div className="flex my-[8px]">
-            <Key className="w-6 h-6 mr-1" />
-             {userData?.unidad_titular}(titular de la unidad)
-          </div>
-        
-        
-        </h2>
-        <h2 className="flex items-center my-[20px] gap-2 text-[1.5em] text-[var(--baseOscura)] mb-[10px] border-t-[1px] border-[var(--baseClara)] pt-[10px]">
-        <User className="w-6 h-6" /> Cuentas asociadas al la unidad
-        </h2>
-        <div className="items-center gap-2 text-[.9em] my-[20px] ml-[10px] text-[var(--baseOscura)] mb-[10px]">
-          {cuentas?.map((v, i) => (
-            <div
-              key={i}
-              className="flex my-[8px] border-b-[1px] border-[var(--baseSuperClara)]"
-            >
-              <User className="w-6 h-6 mr-1" />
-              {v.cuenta_titular} - {v.cuenta_email} - {v.cuenta_telefono} - {v.cuenta_tipo}
+        <div className="app-panel space-y-4">
+          <h2 className="section-title">
+            <BookOpen className="w-6 h-6" /> Datos de la unidad
+          </h2>
+          <div className="info-grid">
+            <div className="info-card">
+              <div className="info-icon"><Building className="w-5 h-5" /></div>
+              <div className="app-stat-label">Propiedad</div>
+              <div className="font-semibold text-[var(--baseOscura)]">{userData?.propiedad_nombre}</div>
             </div>
-          ))}
+            <div className="info-card">
+              <div className="info-icon"><MapPin className="w-5 h-5" /></div>
+              <div className="app-stat-label">Direccion</div>
+              <div className="font-semibold text-[var(--baseOscura)]">{userData?.propiedad_direccion}</div>
+            </div>
+            <div className="info-card">
+              <div className="info-icon"><HomeIcon className="w-5 h-5" /></div>
+              <div className="app-stat-label">Unidad</div>
+              <div className="font-semibold text-[var(--baseOscura)]">{userData?.unidad_nombre}</div>
+            </div>
+            <div className="info-card">
+              <div className="info-icon"><Key className="w-5 h-5" /></div>
+              <div className="app-stat-label">Titular</div>
+              <div className="font-semibold text-[var(--baseOscura)]">{userData?.unidad_titular}</div>
+            </div>
+          </div>
         </div>
-        <h2 className="flex items-center my-[20px] gap-2 text-[1.5em] text-[var(--baseOscura)] mb-[10px] border-t-[1px] border-[var(--baseClara)] pt-[10px]">
+        <div className="app-panel space-y-4">
+          <h2 className="section-title">
+            <User className="w-6 h-6" /> Cuentas asociadas a la unidad
+          </h2>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {cuentas?.map((v, i) => (
+              <div
+                key={i}
+                className="contact-card"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="info-icon mb-0"><User className="w-5 h-5" /></div>
+                  <div>
+                    <div className="font-semibold text-[var(--baseOscura)]">{v.cuenta_titular}</div>
+                    <div className="text-sm text-[var(--surfaceMuted)]">{v.cuenta_email}</div>
+                    <div className="text-xs text-[var(--surfaceMuted)]">{v.cuenta_telefono} - {v.cuenta_tipo}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <h2 className="section-title">
         <UserLock className="w-6 h-6" /> Datos de la cuenta
         </h2>
-        <form   onSubmit={handleSubmitUser} className="space-y-3 text-[var(--baseOscura)] [&_input]:border-[var(--baseOscura)] [&_select]:border-[var(--baseOscura)] w-[90vw] max-w-[560px]">
+        <form onSubmit={handleSubmitUser} className="form-shell max-w-3xl space-y-4 text-[var(--baseOscura)]">
           Nombre:
           <input
             name="nombre"
             placeholder="Nombre"
             value={dataForm.nombre}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            className="app-input"
           />
           Telefono:
           <input
@@ -218,7 +230,7 @@ export default function Cuenta() {
             placeholder="Teléfono"
             value={dataForm.telefono}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            className="app-input"
           />
           Email:
           <input
@@ -228,40 +240,40 @@ export default function Cuenta() {
             placeholder="Email"
             value={dataForm.email}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2 bg-[var(--baseSuperClara)]"
+            className="app-input bg-[var(--baseSuperClara)]"
           />
           Tipo de cuenta:
           <select disabled
             name="tipoCuenta"
             value={dataForm.tipoCuenta}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-3 bg-[var(--baseSuperClara)]"
+            className="app-input bg-[var(--baseSuperClara)]"
           >
             <option value="">Tipo de cuenta</option>
             <option value="inquilino">Inquilino</option>
             <option value="inmobiliaria">Inmobiliaria</option>
             <option value="propietario">Propietario</option>
           </select>
-          <p>{submitUserText}</p>
+          <p className="text-sm font-semibold">{submitUserText}</p>
           <Button
           type="submit"
           disabled={loadingButton}
-          className={`w-full bg-[var(--baseOscura)] text-[1.1em] px-3 py-2 text-white rounded cursor-pointer`}
+          className="app-button w-full cursor-pointer"
           >
             {!loadingButton?("Modificar datos personales"):(<Loading type="inline" text={"Actualizando datos"} color="#FFF"></Loading>)}
           </Button>
         </form>
-        <h2 className="flex items-center my-[20px] gap-2 text-[1.5em] text-[var(--baseOscura)] mb-[10px] border-t-[1px] border-[var(--baseClara)] pt-[10px]">
+        <h2 className="section-title">
         <UserLock className="w-6 h-6" /> Edita tu clave
         </h2>
-        <form onSubmit={handleSubmitPassword} className="space-y-3 text-[var(--baseOscura)] [&_input]:border-[var(--baseOscura)] [&_select]:border-[var(--baseOscura)] w-[90vw] max-w-[560px]">
+        <form onSubmit={handleSubmitPassword} className="form-shell max-w-3xl space-y-4 text-[var(--baseOscura)]">
           <input
             name="clave_actual"
             placeholder="Clave actual"
             type="password"
             value={dataFormClave.clave_actual}
             onChange={handleChangePassword}
-            className="w-full border rounded px-3 py-2"
+            className="app-input"
           />
 
           <input
@@ -270,7 +282,7 @@ export default function Cuenta() {
             type="password"
             value={dataFormClave.clave_nueva_1}
             onChange={handleChangePassword}
-            className="w-full border rounded px-3 py-2"
+            className="app-input"
           />
 
           <input
@@ -279,13 +291,13 @@ export default function Cuenta() {
             type="password"
             value={dataFormClave.clave_nueva_2}
             onChange={handleChangePassword}
-            className="w-full border rounded px-3 py-2"
+            className="app-input"
           />
-          <p>{submitPasswordText}</p>
+          <p className="text-sm font-semibold">{submitPasswordText}</p>
           <Button
           type="submit"
           disabled={loadingButton2}
-          className={`w-full bg-[var(--baseOscura)] text-[1.1em] px-3 py-2 text-white rounded cursor-pointer`}
+          className="app-button w-full cursor-pointer"
           >
             {!loadingButton2?("Modificar tu clave"):(<Loading type="inline" text={"Intentando cambiar tu clave.."} color="#FFF"></Loading>)}
           </Button>

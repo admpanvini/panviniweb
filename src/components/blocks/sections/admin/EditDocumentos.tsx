@@ -70,20 +70,20 @@ export default function EditarDocumento() {
   }
 
   return (
-    <Card className="px-6 py-0 max-w-lg mx-auto text-[var(--baseOscura-admin)]">
+    <Card className="app-panel mx-auto max-w-5xl text-[var(--baseOscura-admin)]">
 
       <h1 className="flex items-center gap-2 text-[2em]">
         Nuevo Documento
       </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+      <form onSubmit={handleSubmit} className="mt-4 max-w-4xl space-y-4">
 
         {/* Propiedad */}
         Propiedad:
         <select
           value={propiedadCodigo}
           onChange={(e) => setPropiedadCodigo(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="app-input"
         >
           <option value="">Seleccione propiedad</option>
           {propiedades.map((p: any) => (
@@ -100,7 +100,7 @@ export default function EditarDocumento() {
           placeholder="Ej: Expensas Marzo"
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="app-input"
         />
 
         {/* Archivo */}
@@ -109,13 +109,13 @@ export default function EditarDocumento() {
           type="file"
           accept="application/pdf,image/png,image/jpeg"
           onChange={(e) => setFile(e.target.files?.[0] || null)}
-          className="w-full border rounded px-3 py-2"
+          className="app-input"
         />
 
         <Button
           type="submit"
           disabled={loading}
-          className="cursor-pointer bg-[var(--baseOscura-admin)] text-white rounded-xl w-full"
+          className="app-button w-full cursor-pointer"
         >
           {loading ? "Subiendo..." : "Guardar documento"}
         </Button>
@@ -126,7 +126,7 @@ export default function EditarDocumento() {
             {showReconnect && (
               <Button
                 type="button"
-                className="ml-2 rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2 cursor-pointer"
+                className="app-button ml-2 cursor-pointer"
                 onClick={() => { window.location.href = reconnectUrl; }}
               >
                 Reestablecer conexión

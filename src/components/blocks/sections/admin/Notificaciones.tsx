@@ -165,18 +165,18 @@ export default function Notificaciones() {
       <Loading type="replace" height="150px" text={loadingText} />
     ):(<div className="text-[var(--baseOscura-admin)]">
       
-      <h1 className="flex items-center gap-2 text-[2em] ">
+      <h1 className="app-title">
         <Bell /> Notificaciones
       </h1>      
 
       {/* FILTROS */}
-      <div className="items-center my-3 gap-3">
+      <div className="filter-bar my-3">
 
-        Propiedad:
+        <span className="filter-label">Propiedad</span>
         <select
           value={propiedadSeleccionada || ""}
           onChange={(e) => setPropiedadSeleccionada(e.target.value || null)}
-          className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2.5 max-w-[200px] mx-2"
+          className="app-input max-w-[220px]"
         >
           <option value="">Todas</option>
           {propiedades.map((p: any) => (
@@ -186,25 +186,25 @@ export default function Notificaciones() {
           ))}
         </select>
 
-        Estado:
+        <span className="filter-label">Estado</span>
         <select
           value={estadoSeleccionado}
           onChange={(e) => setEstadoSeleccionado(e.target.value)}
-          className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2.5 max-w-[150px] mx-2"
+          className="app-input max-w-[170px]"
         >
           <option value="activo">Activas</option>
           <option value="eliminado">Eliminadas</option>
         </select>
 
-        Buscar:
+        <span className="filter-label">Buscar</span>
         <input
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Buscar..."
-          className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2 max-w-[250px] mx-2"
+          className="app-input max-w-[260px]"
         />
         {/* Botón crear */}
-        <Button className="!flex !flex-row !items-center !gap-2 rounded-xl bg-[var(--baseOscura-admin)] text-white py-3 cursor-pointer float-right"
+        <Button className="app-button cursor-pointer"
         onClick={() => router.push("/admin/notificaciones/editar")}>
           Nueva notificación
         </Button>
@@ -212,8 +212,8 @@ export default function Notificaciones() {
       </div>
 
       {/* TABLA */}
-      <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia-admin)]">
-        <TableHead style={{ background: "var(--colorTableHeader-admin)" }}>
+      <Table className="app-table">
+        <TableHead className="app-table-head">
           <TableRow>
             <TableHeaderCell className="px-4 py-2 text-white"></TableHeaderCell>
             <TableHeaderCell className="px-4 py-2 text-white">Título</TableHeaderCell>
@@ -226,7 +226,7 @@ export default function Notificaciones() {
         <TableBody className="text-[var(--baseOscura-admin)]">
           {filteredData.length ? (
             filteredData.map((row, i) => (
-              <TableRow key={i} className="odd:bg-[rgba(0,0,0,.03)]">
+              <TableRow key={i} className="app-table-row">
                 <TableCell className="px-4 py-2">
                 {row.notificacion_estado === "activo" ? (
                 <CircleCheck />
@@ -240,7 +240,7 @@ export default function Notificaciones() {
 
                 <TableCell className="px-4 py-2 flex justify-center">
                   <Button
-                    className="rounded-xl bg-[var(--baseOscura-admin)] text-white cursor-pointer"
+                    className="app-icon-button cursor-pointer"
                     onClick={() => setModal({ open: true, id: row.id_notificacion , titulo:row.notificacion_titulo })}
                   >
                     {row.notificacion_estado === "activo" ? (
@@ -266,7 +266,7 @@ export default function Notificaciones() {
       {filteredData.length >= limit && (
         <div className="flex justify-center my-4">
           <Button
-            className="rounded-xl bg-[var(--baseOscura-admin)] text-white cursor-pointer"
+            className="app-button cursor-pointer"
             onClick={() => loadNotificaciones(false)}
           >
             Cargar más
@@ -283,7 +283,7 @@ export default function Notificaciones() {
               <Trash className="w-13 h-13"/>
               <p className="">¿Estas seguro de cambiar el estado de la notificación?</p>
             </div>
-            <p className="text-black text-[14px] my-3">"{modal.titulo}".</p>
+            <p className="text-[var(--appOscura)] text-[14px] my-3">"{modal.titulo}".</p>
           </>
         }
         onCancel={() => setModal({ open: false, id: null , titulo:''})}

@@ -46,23 +46,24 @@ export default function Sidebar({ className = "", onNavigate }: { className?: st
   const pathname = usePathname();
   const basePath: String= pathname.split('/')[1] || 'user';
   const css_color = basePath === "user" ? "" : "-admin";
+  const themeClass = basePath === "user" ? "theme-user" : "theme-admin";
 
   return (
-    <aside className={`w-64 bg-gray-900 text-white ${className}`}>
+    <aside className={`w-64 p-3 text-white ${themeClass} ${className}`}>
       <Card
-        className="h-full border-none shadow-none"
+        className="h-full border-none rounded-[26px] shadow-[0_24px_60px_rgba(28,39,73,.22)]"
         style={{ background: `var(--colorSidebar${css_color})` }}
       >
-        <nav className="flex flex-col gap-1">
+        <nav className="flex flex-col gap-2 pt-2">
           {(basePath=='user'?links_user:links_admin).map(({ name, path, icon: Icon }) => (
             <Link
               key={name}
               href={path}
               onClick={onNavigate}
-              className={`flex items-center gap-3 px-4 py-2 rounded transition ${
+              className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm transition duration-200 ${
                 pathname === path
-                  ? `text-[var(--baseClara${css_color})] font-semibold`
-                  : "hover:bg-[rgba(255,255,255,0.1)]"
+                  ? `bg-white text-[var(--baseOscura${css_color})] font-semibold shadow-[0_12px_30px_rgba(0,0,0,.14)]`
+                  : "text-white/80 hover:bg-white/10 hover:text-white"
               }`}
             >
               <Icon size={18} /> {/* 👈 acá va el ícono */}

@@ -65,28 +65,28 @@ export default function EditarNotificaciones() {
   }
 
   return (
-    <Card className="px-6 py-0 max-w-lg mx-auto text-[var(--baseOscura-admin)]">
+    <Card className="app-panel mx-auto max-w-5xl text-[var(--baseOscura-admin)]">
       <h1 className="text-[2em]">Nueva Notificación</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="max-w-4xl space-y-4">
 
         Título:
         <input
-          className="w-full border rounded px-3 py-2"
+          className="app-input"
           value={form.notificacion_titulo}
           onChange={e=>setForm({...form,notificacion_titulo:e.target.value})}
         />
 
         Detalle:
         <textarea
-          className="w-full border rounded px-3 py-2"
+          className="app-input"
           value={form.notificacion}
           onChange={e=>setForm({...form,notificacion:e.target.value})}
         />
 
         Sección:
         <select
-          className="w-full border rounded px-3 py-2"
+          className="app-input"
           value={form.notificacion_seccion}
           onChange={e=>setForm({...form,notificacion_seccion:Number(e.target.value)})}
         >
@@ -98,7 +98,7 @@ export default function EditarNotificaciones() {
 
         Propiedades:
         <div className="flex flex-wrap gap-2">
-          <a className={`flex items-center gap-2 px-2 bg-[var(--baseOscura-admin)] text-white rounded cursor-pointer`}
+          <a className="app-button cursor-pointer"
               onClick={()=>{form.propiedades.length>0?setForm({...form,propiedades:[]}):setForm({...form,propiedades:propiedades.map(p=>p.id_propiedad)})}}>
               Todas las propiedades
           </a>
@@ -123,7 +123,7 @@ export default function EditarNotificaciones() {
 
         <Button
           type="submit"
-          className="w-full bg-[var(--baseOscura-admin)] text-white"
+          className="app-button w-full cursor-pointer"
         >
           Guardar
         </Button>

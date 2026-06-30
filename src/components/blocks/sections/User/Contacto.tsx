@@ -54,8 +54,8 @@ export default function Contacto() {
         <Loading type="replace" height="150px" text={loadingText} appType="user" />
 
       ):
-      (<div>
-          <h1 className="flex items-center gap-2 text-[2em] text-[var(--baseOscura)] mb-4">
+      (<div className="space-y-5">
+          <h1 className="app-title mb-4">
           <Mail className="w-6 h-6" />
           Contactanos
           </h1>
@@ -64,7 +64,7 @@ export default function Contacto() {
             const isMobile = typeof window !== "undefined" && window.innerWidth < 768
 
             return (
-              <div key={i} className="flex justify-between text-sm border-b border-[var(--baseClara)] py-1">
+              <div key={i} className="contact-card">
                 
                 <div>
                   <div className="font-medium text-[var(--baseOscura)] font-semibold">{label}</div>
@@ -76,7 +76,7 @@ export default function Contacto() {
                   {type==="phone" && isMobile && (
                     <a
                       href={`tel:${value}`}
-                      className="px-3 py-1 text-sm bg-[var(--baseOscura)] text-white rounded hover:bg-[var(--baseClara)]"
+                      className="app-button"
                     >
                       Llamar
                     </a>
@@ -86,7 +86,7 @@ export default function Contacto() {
                     <a
                       href={`https://wa.me/${value}`}
                       target="_blank"
-                      className="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700"
+                      className="app-button"
                     >
                       Enviar WhatsApp
                     </a>
@@ -95,7 +95,7 @@ export default function Contacto() {
                   {type==="email" && (
                     <a
                       href={`mailto:${value}`}
-                      className="px-3 py-1 text-sm bg-[var(--baseOscura)] text-white rounded hover:bg-[var(--baseClara)]"
+                      className="app-button"
                     >
                       Escribir Email
                     </a>
@@ -106,7 +106,6 @@ export default function Contacto() {
               </div>
             )
           })}
-          <hr />
       </div>)}
     </div>
   );

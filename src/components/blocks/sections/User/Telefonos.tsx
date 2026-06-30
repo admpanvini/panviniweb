@@ -11,7 +11,7 @@ import {
   TableCell,
   Button,
 } from "@tremor/react";
-import { Building, FileText, HomeIcon, LocateIcon, LocationEditIcon, MapPin, Phone } from "lucide-react";
+import { Building, FileText, HomeIcon, Key, LocateIcon, LocationEditIcon, MapPin, Phone } from "lucide-react";
 import DynamicTable from "@/components/base/DynamicTable";
 import formatFechaArgentina from "@/components/helpers/dataFormat";
 import { useUser } from "./UserContext";
@@ -31,25 +31,35 @@ export default function Telefonos() {
 
 
   return (
-    <div>
-        <h1 className="flex items-center gap-2 text-[2em] text-[var(--baseOscura)] mb-4">
+    <div className="space-y-5">
+        <h1 className="app-title mb-4">
         <Phone className="w-6 h-6" />
         Teléfonos útiles
         </h1>
-        <h2 className="flex items-center gap-2 text-[1.1em] text-[var(--baseOscura)] mb-[10px]">
-        <Building className="w-6 h-6" />
-        {userData.propiedad_nombre}
-        <MapPin className="w-6 h-6" />
-        {userData.propiedad_direccion}
-        <HomeIcon className="w-6 h-6" />
-        {userData.unidad_nombre}
-        </h2>
+        <div className="property-summary">
+          <div className="property-item">
+            <span className="property-icon"><Building className="w-5 h-5" /></span>
+            <div><div className="property-label">Inmueble</div><div className="property-value">{userData.propiedad_nombre}</div></div>
+          </div>
+          <div className="property-item">
+            <span className="property-icon"><MapPin className="w-5 h-5" /></span>
+            <div><div className="property-label">Direccion</div><div className="property-value">{userData.propiedad_direccion}</div></div>
+          </div>
+          <div className="property-item">
+            <span className="property-icon"><HomeIcon className="w-5 h-5" /></span>
+            <div><div className="property-label">Unidad</div><div className="property-value">{userData.unidad_nombre}</div></div>
+          </div>
+          <div className="property-item">
+            <span className="property-icon"><Key className="w-5 h-5" /></span>
+            <div><div className="property-label">Titular</div><div className="property-value">{userData.unidad_titular}</div></div>
+          </div>
+        </div>
         {userData.propiedad_datos?.split("||").map((v,i)=>{
           const [label,value,type] = v.split("//")
           const isMobile = typeof window !== "undefined" && window.innerWidth < 768
 
           return (
-            <div key={i} className="flex justify-between text-sm border-b border-[var(--baseClara)] py-1">
+            <div key={i} className="contact-card">
               
               <div>
                 <div className="font-medium text-[var(--baseOscura)] font-semibold">{label}</div>
@@ -61,7 +71,7 @@ export default function Telefonos() {
                 {type==="phone" && isMobile && (
                   <a
                     href={`tel:${value}`}
-                    className="px-3 py-1 text-sm bg-[var(--baseOscura)] text-white rounded hover:bg-[var(--baseClara)]"
+                    className="app-button"
                   >
                     Llamar
                   </a>
@@ -71,7 +81,7 @@ export default function Telefonos() {
                   <a
                     href={`https://wa.me/${value}`}
                     target="_blank"
-                    className="px-3 py-1 text-sm bg-[var(--baseOscura)] text-white rounded hover:bg-green-700"
+                    className="app-button"
                   >
                     Enviar WhatsApp
                   </a>
@@ -80,7 +90,7 @@ export default function Telefonos() {
                 {type==="email" && (
                   <a
                     href={`mailto:${value}`}
-                    className="px-3 py-1 text-sm bg-[var(--baseOscura)] text-white rounded hover:bg-[var(--baseClara)]"
+                    className="app-button"
                   >
                     Escribir Email
                   </a>
@@ -91,7 +101,6 @@ export default function Telefonos() {
             </div>
           )
         })}
-        <hr />
     </div>
     
   );

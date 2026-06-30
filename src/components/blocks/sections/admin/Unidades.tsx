@@ -121,39 +121,42 @@ export default function Unidades() {
         <Loading type="replace" height="150px" text={loadingText} />
       ):
       (
-        <div className="text-[var(--baseOscura-admin)]">
-          <h1 className="flex items-center gap-2 text-[2em] ">
+        <div className="space-y-5 text-[var(--baseOscura-admin)]">
+          <h1 className="app-title">
             <Home /> Unidades
           </h1>
           {/* 🔍 Filtros y selector de propiedad */}
-          <div className="items-center my-3 gap-3">
+          <div className="filter-bar my-3">
             {/* Botón nuevo */}
             {/* Select Propiedad */}
-            Filtrar propiedad:<select
-              value={propiedadSeleccionada || ""}
-              onChange={(e) =>
-                setPropiedadSeleccionada(e.target.value || null)
-              }
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2.5 text-[var(--baseOscura-admin)] w-full max-w-[250px] mx-2"
-            >
-              <option value="">Seleccionar propiedad...</option>
-              {propiedades.map((p: any) => (
-                <option key={p.propiedad_codigo} value={p.propiedad_codigo}>
-                  {p.propiedad_nombre} ({p.propiedad_codigo})
-                </option>
-              ))}
-            </select>
+            <label className="filter-item">
+              <span className="filter-label">Propiedad</span>
+              <select
+                value={propiedadSeleccionada || ""}
+                onChange={(e) =>
+                  setPropiedadSeleccionada(e.target.value || null)
+                }
+                className="app-input max-w-[260px]"
+              >
+                <option value="">Seleccionar propiedad...</option>
+                {propiedades.map((p: any) => (
+                  <option key={p.propiedad_codigo} value={p.propiedad_codigo}>
+                    {p.propiedad_nombre} ({p.propiedad_codigo})
+                  </option>
+                ))}
+              </select>
+            </label>
             {/* Input de búsqueda */}
-            Buscar texto:
+            <span className="filter-label">Buscar</span>
             <input
               type="text"
               placeholder="Filtrar por nombre o código..."
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="border border-[var(--baseOscura-admin)] rounded-lg px-3 py-2 w-full max-w-[300px] text-[var(--baseOscura-admin)] mx-2"
+              className="app-input max-w-[320px]"
             />
             <Button
-              className="rounded-xl bg-[var(--baseOscura-admin)] text-white px-3 py-2.5 float-right cursor-pointer"
+              className="app-button cursor-pointer"
               onClick={() => router.push("/admin/unidades/editar")}
             >
               Nueva unidad
@@ -163,16 +166,15 @@ export default function Unidades() {
 
           {/* ⚠️ Si no hay propiedad seleccionada */}
           {!propiedadSeleccionada ? (
-            <div className="text-center text-[var(--baseOscura-admin)] py-10">
+            <div className="app-panel text-center text-[var(--baseOscura-admin)] py-10">
               Seleccioná una propiedad para ver sus unidades.
             </div>
           ) : 
           (
             // 🧾 Tabla de unidades
-            <Table className="rounded-lg overflow-hidden text-sm border border-[var(--baseMedia-admin)]">
+            <Table className="app-table">
               <TableHead
-                className="text-white"
-                style={{ background: "var(--colorTableHeader-admin)" }}
+                className="app-table-head"
               >
                 <TableRow>
                   <TableHeaderCell className="px-4 py-2">ID</TableHeaderCell>
@@ -189,7 +191,7 @@ export default function Unidades() {
               <TableBody className="text-[var(--baseOscura-admin)]">
                 {filteredData.length > 0 ? (
                   filteredData.map((row, i) => (
-                    <TableRow key={i} className="odd:bg-[rgba(0,0,0,.03)]">
+                    <TableRow key={i} className="app-table-row">
                       <TableCell className="px-4 py-2">{row.id_unidad}</TableCell>
                       <TableCell className="px-4 py-2">{row.unidad_codigo}</TableCell>
                       <TableCell className="px-4 py-2">{row.unidad_nombre}</TableCell>
@@ -200,7 +202,7 @@ export default function Unidades() {
                       <TableCell className="px-4 py-2 min-w-35  text-center">
                         <Button
                           title="Editar"
-                          className="rounded-xl bg-[var(--baseOscura-admin)] text-white cursor-pointer"
+                          className="app-icon-button cursor-pointer"
                           onClick={() =>
                             router.push(`/admin/unidades/editar?id=${row.id_unidad}`)
                           }
@@ -209,7 +211,7 @@ export default function Unidades() {
                         </Button>
                         <Button 
                           title="Eliminar"
-                          className="rounded-xl bg-[var(--baseOscura-admin)] text-white cursor-pointer"
+                          className="app-icon-button cursor-pointer"
                           onClick={() => openDeleteModal(row.id_unidad)}>
                           <Trash className="w-4 h-4" />
                         </Button>
